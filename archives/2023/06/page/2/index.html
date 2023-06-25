@@ -20,20 +20,18 @@
     var CONFIG = {"hostname":"justqj.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="模型的保存 保存训练好的模型最好load到cpu上再保存。 使用torch.nn.DataParallel()训练的模型，注意保存时要去掉module模块，不然加载时也需要先用DataParallel()包裹才能加载。  &#96;&#96;&#96;不去掉module保存：torch.save(model.state_dict(), ‘validate.pth.tar’)加载：model &#x3D; torch.nn.Data">
-<meta property="og:type" content="article">
-<meta property="og:title" content="testmyblog.md">
-<meta property="og:url" content="https://justqj.github.io/2023/04/09/testmyblog/index.html">
+  <meta name="description" content="记录个人学习的知识和技术">
+<meta property="og:type" content="website">
+<meta property="og:title" content="流年的个人博客">
+<meta property="og:url" content="https://justqj.github.io/archives/2023/06/page/2/index.html">
 <meta property="og:site_name" content="流年的个人博客">
-<meta property="og:description" content="模型的保存 保存训练好的模型最好load到cpu上再保存。 使用torch.nn.DataParallel()训练的模型，注意保存时要去掉module模块，不然加载时也需要先用DataParallel()包裹才能加载。  &#96;&#96;&#96;不去掉module保存：torch.save(model.state_dict(), ‘validate.pth.tar’)加载：model &#x3D; torch.nn.Data">
+<meta property="og:description" content="记录个人学习的知识和技术">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-04-09T13:57:58.000Z">
-<meta property="article:modified_time" content="2023-04-09T14:00:54.075Z">
 <meta property="article:author" content="流年">
 <meta property="article:tag" content="个人笔记、计算机技术、备忘录">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://justqj.github.io/2023/04/09/testmyblog/">
+<link rel="canonical" href="https://justqj.github.io/archives/2023/06/page/2/">
 
 
 <script id="page-configurations">
@@ -41,12 +39,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : true,
+    isPost : false,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>testmyblog.md | 流年的个人博客</title>
+  <title>归档 | 流年的个人博客</title>
   
 
 
@@ -154,86 +152,234 @@
         <div class="content-wrap">
           
 
-          <div class="content post posts-expand">
+          <div class="content archive">
             
 
-    
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://justqj.github.io/2023/04/09/testmyblog/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="流年">
-      <meta itemprop="description" content="记录个人学习的知识和技术">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="流年的个人博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          testmyblog.md
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-04-09 21:57:58 / 修改时间：22:00:54" itemprop="dateCreated datePublished" datetime="2023-04-09T21:57:58+08:00">2023-04-09</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+  
+  <div class="post-block">
+    <div class="posts-collapse">
+      <div class="collection-title">
+        <span class="collection-header">嗯..! 目前共计 23 篇日志。 继续努力。</span>
+      </div>
 
       
-        <h1 id="模型的保存"><a href="#模型的保存" class="headerlink" title="模型的保存"></a>模型的保存</h1><ol>
-<li>保存训练好的模型最好load到cpu上再保存。</li>
-<li>使用torch.nn.DataParallel()训练的模型，注意保存时要去掉module模块，不然加载时也需要先用DataParallel()包裹才能加载。</li>
-</ol>
-<p>```<br>不去掉module保存：<br>torch.save(model.state_dict(), ‘validate.pth.tar’)<br>加载：<br>model = torch.nn.DataParallel(model)<br>state = torch.load(‘validate.pth.tar’)<br>model.load_state_dict(state)</p>
-<p>去掉module并在cpu上保存：<br>model = model.to(‘cpu’)<br>torch.save(model.module.state_dict(),’validate.pth.tar’)<br>加载：<br>state = torch.load(‘validate.pth.tar’)<br>model.load_state_dict(state</p>
-
+    <div class="collection-year">
+      <span class="collection-header">2023</span>
     </div>
 
-    
-    
-    
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
 
-      <footer class="post-footer">
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2023-06-25T16:16:30+08:00"
+              content="2023-06-25">
+          06-25
+        </time>
+      </div>
 
-        
+      <div class="post-title">
+          <a class="post-title-link" href="/2023/06/25/%E5%AE%89%E8%A3%85pyaudio/" itemprop="url">
+            <span itemprop="name">未命名</span>
+          </a>
+      </div>
 
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2023/04/09/hello-world/" rel="prev" title="Hello World">
-      <i class="fa fa-chevron-left"></i> Hello World
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2023/06/25/bayer2rgb/" rel="next" title="">
-       <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
+    </header>
   </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2023-06-25T16:16:30+08:00"
+              content="2023-06-25">
+          06-25
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2023/06/25/pytorch%E6%A8%A1%E5%9E%8B%E4%BF%9D%E5%AD%98/" itemprop="url">
+            <span itemprop="name">未命名</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2023-06-25T16:16:30+08:00"
+              content="2023-06-25">
+          06-25
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2023/06/25/pytorch%E5%8A%A0%E9%80%9F/" itemprop="url">
+            <span itemprop="name">未命名</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2023-06-25T16:16:30+08:00"
+              content="2023-06-25">
+          06-25
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2023/06/25/Linux%E5%B8%B8%E7%94%A8%E8%AE%BE%E7%BD%AE/" itemprop="url">
+            <span itemprop="name">未命名</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2023-06-25T16:16:30+08:00"
+              content="2023-06-25">
+          06-25
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2023/06/25/onedrivelinux/" itemprop="url">
+            <span itemprop="name">未命名</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2023-06-25T16:16:30+08:00"
+              content="2023-06-25">
+          06-25
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2023/06/25/JetsonNx%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/" itemprop="url">
+            <span itemprop="name">未命名</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2023-06-25T16:16:30+08:00"
+              content="2023-06-25">
+          06-25
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2023/06/25/Linux%E5%AE%89%E8%A3%85Cuda/" itemprop="url">
+            <span itemprop="name">未命名</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2023-06-25T16:16:30+08:00"
+              content="2023-06-25">
+          06-25
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2023/06/25/GPU%E4%B8%8A%E4%B8%8D%E5%90%8C%E7%B2%BE%E5%BA%A6%E7%9A%84%E8%AE%A1%E7%AE%97/" itemprop="url">
+            <span itemprop="name">未命名</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2023-06-25T16:16:30+08:00"
+              content="2023-06-25">
+          06-25
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2023/06/25/GPU%E6%9E%B6%E6%9E%84/" itemprop="url">
+            <span itemprop="name">未命名</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2023-06-25T16:16:30+08:00"
+              content="2023-06-25">
+          06-25
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2023/06/25/DarkNet%E6%A1%86%E6%9E%B6%E4%B8%AD%E8%AE%B0%E5%BD%95%E6%AF%8F%E4%B8%80%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E6%89%A7%E8%A1%8C%E6%97%B6%E9%97%B4/" itemprop="url">
+            <span itemprop="name">未命名</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
+
+
+    </div>
+  </div>
   
   
   
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/archives/2023/06/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/archives/2023/06/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/2023/06/page/3/">3</a><a class="extend next" rel="next" href="/archives/2023/06/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
 
 
 
@@ -285,7 +431,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%BF%9D%E5%AD%98"><span class="nav-number">1.</span> <span class="nav-text">模型的保存</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

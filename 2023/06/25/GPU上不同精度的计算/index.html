@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"justqj.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="模型的保存 保存训练好的模型最好load到cpu上再保存。 使用torch.nn.DataParallel()训练的模型，注意保存时要去掉module模块，不然加载时也需要先用DataParallel()包裹才能加载。  &#96;&#96;&#96;不去掉module保存：torch.save(model.state_dict(), ‘validate.pth.tar’)加载：model &#x3D; torch.nn.Data">
+  <meta name="description" content="NVIDIA GPU不同精度计算的速度对比问题：int8是只能在Tensor Core上还是说也能在CUDA Core上计算，速度是否有区别？实验：在Jetson Xavier NX(CUDA Core 384个，Tensor Core 48个)上测试两个矩阵乘法，一个是int8，一个是fp32，下面的结果显示int8要快于fp32一倍左右。这里的速度是来自CUDA Core本身，即CUDA co">
 <meta property="og:type" content="article">
-<meta property="og:title" content="testmyblog.md">
-<meta property="og:url" content="https://justqj.github.io/2023/04/09/testmyblog/index.html">
+<meta property="og:title" content="流年的个人博客">
+<meta property="og:url" content="https://justqj.github.io/2023/06/25/GPU%E4%B8%8A%E4%B8%8D%E5%90%8C%E7%B2%BE%E5%BA%A6%E7%9A%84%E8%AE%A1%E7%AE%97/index.html">
 <meta property="og:site_name" content="流年的个人博客">
-<meta property="og:description" content="模型的保存 保存训练好的模型最好load到cpu上再保存。 使用torch.nn.DataParallel()训练的模型，注意保存时要去掉module模块，不然加载时也需要先用DataParallel()包裹才能加载。  &#96;&#96;&#96;不去掉module保存：torch.save(model.state_dict(), ‘validate.pth.tar’)加载：model &#x3D; torch.nn.Data">
+<meta property="og:description" content="NVIDIA GPU不同精度计算的速度对比问题：int8是只能在Tensor Core上还是说也能在CUDA Core上计算，速度是否有区别？实验：在Jetson Xavier NX(CUDA Core 384个，Tensor Core 48个)上测试两个矩阵乘法，一个是int8，一个是fp32，下面的结果显示int8要快于fp32一倍左右。这里的速度是来自CUDA Core本身，即CUDA co">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-04-09T13:57:58.000Z">
-<meta property="article:modified_time" content="2023-04-09T14:00:54.075Z">
+<meta property="article:published_time" content="2023-06-25T08:16:30.589Z">
+<meta property="article:modified_time" content="2023-06-12T14:57:46.554Z">
 <meta property="article:author" content="流年">
 <meta property="article:tag" content="个人笔记、计算机技术、备忘录">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://justqj.github.io/2023/04/09/testmyblog/">
+<link rel="canonical" href="https://justqj.github.io/2023/06/25/GPU%E4%B8%8A%E4%B8%8D%E5%90%8C%E7%B2%BE%E5%BA%A6%E7%9A%84%E8%AE%A1%E7%AE%97/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>testmyblog.md | 流年的个人博客</title>
+  <title> | 流年的个人博客</title>
   
 
 
@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://justqj.github.io/2023/04/09/testmyblog/">
+    <link itemprop="mainEntityOfPage" href="https://justqj.github.io/2023/06/25/GPU%E4%B8%8A%E4%B8%8D%E5%90%8C%E7%B2%BE%E5%BA%A6%E7%9A%84%E8%AE%A1%E7%AE%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -174,7 +174,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          testmyblog.md
+          
         </h1>
 
         <div class="post-meta">
@@ -183,10 +183,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-04-09 21:57:58 / 修改时间：22:00:54" itemprop="dateCreated datePublished" datetime="2023-04-09T21:57:58+08:00">2023-04-09</time>
+              <time title="创建时间：2023-06-25 16:16:30" itemprop="dateCreated datePublished" datetime="2023-06-25T16:16:30+08:00">2023-06-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-12 22:57:46" itemprop="dateModified" datetime="2023-06-12T22:57:46+08:00">2023-06-12</time>
+              </span>
 
           
 
@@ -199,12 +205,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="模型的保存"><a href="#模型的保存" class="headerlink" title="模型的保存"></a>模型的保存</h1><ol>
-<li>保存训练好的模型最好load到cpu上再保存。</li>
-<li>使用torch.nn.DataParallel()训练的模型，注意保存时要去掉module模块，不然加载时也需要先用DataParallel()包裹才能加载。</li>
-</ol>
-<p>```<br>不去掉module保存：<br>torch.save(model.state_dict(), ‘validate.pth.tar’)<br>加载：<br>model = torch.nn.DataParallel(model)<br>state = torch.load(‘validate.pth.tar’)<br>model.load_state_dict(state)</p>
-<p>去掉module并在cpu上保存：<br>model = model.to(‘cpu’)<br>torch.save(model.module.state_dict(),’validate.pth.tar’)<br>加载：<br>state = torch.load(‘validate.pth.tar’)<br>model.load_state_dict(state</p>
+        <h2 id="NVIDIA-GPU不同精度计算的速度对比"><a href="#NVIDIA-GPU不同精度计算的速度对比" class="headerlink" title="NVIDIA GPU不同精度计算的速度对比"></a>NVIDIA GPU不同精度计算的速度对比</h2><p>问题：int8是只能在Tensor Core上还是说也能在CUDA Core上计算，速度是否有区别？<br>实验：在Jetson Xavier NX(CUDA Core 384个，Tensor Core 48个)上测试两个矩阵乘法，一个是int8，一个是fp32，下面的结果显示int8要快于fp32一倍左右。这里的速度是来自CUDA Core本身，即CUDA core跑int8的乘法就是比fp32快，还是说Int8在Tensor Core上面跑的？<br>**根据<a target="_blank" rel="noopener" href="https://forums.developer.nvidia.com/t/how-to-confirm-whether-tensor-core-is-working-or-not/70263">这个回答</a>**，使用<code>nvprof</code>可以查看是否使用了Tensor Core。如使用下面的命令运行测试脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -E /usr/local/cuda/bin/nvprof  --metrics tensor_precision_fu_utilization,tensor_int_fu_utilization /home/tangpeng/miniforge-pypy3/envs/per-dvfs/bin/python3.6 test.py # -E为了保证sudo使用当前用户的环境变量</span><br></pre></td></tr></table></figure>
+<p>得到的结果显示并没有使用tensor core（ tensor_int_fu_utilization 为0），所以加速来自cuda core本身计算int8就比较快？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Device &quot;Xavier (0)&quot;</span><br><span class="line">    Kernel: void at::native::vectorized_elementwise_kernel&lt;int=4, at::native::BinaryFunctor&lt;float, float, float, at::native::MulFunctor&lt;float&gt;&gt;, at::detail::Array&lt;char*, int=3&gt;&gt;(int, float, float)</span><br><span class="line">         20           tensor_precision_fu_utilization   Tensor-Precision Function Unit Utilization    Idle (0)    Idle (0)    Idle (0)</span><br><span class="line">         20                 tensor_int_fu_utilization         Tensor-Int Function Unit Utilization    Idle (0)    Idle (0)    Idle (0)</span><br><span class="line">    Kernel: void at::native::vectorized_elementwise_kernel&lt;int=4, at::native::BinaryFunctor&lt;char, char, char, at::native::MulFunctor&lt;char&gt;&gt;, at::detail::Array&lt;char*, int=3&gt;&gt;(int, char, char)</span><br><span class="line">         10           tensor_precision_fu_utilization   Tensor-Precision Function Unit Utilization    Idle (0)    Idle (0)    Idle (0)</span><br><span class="line">         10                 tensor_int_fu_utilization         Tensor-Int Function Unit Utilization    Idle (0)    Idle (0)    Idle (0)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"># test.py</span><br><span class="line">import torch</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">a = torch.randn(1024,1024).cuda()</span><br><span class="line">b = a.clone()</span><br><span class="line"></span><br><span class="line">aint = torch.randint(0,100,(1024,1024),dtype=torch.int8).cuda()</span><br><span class="line">bint = aint.clone()</span><br><span class="line"></span><br><span class="line">for i in range(10): #warm up</span><br><span class="line">    c = a*b</span><br><span class="line">torch.cuda.synchronize()</span><br><span class="line">time1 = time.time()</span><br><span class="line">for i in range(10):</span><br><span class="line">    c = a*b</span><br><span class="line">torch.cuda.synchronize()</span><br><span class="line">time2  =time.time()</span><br><span class="line">print(&quot;fp32: &quot;, time2-time1)</span><br><span class="line"></span><br><span class="line">time1 = time.time()</span><br><span class="line">for i in range(10):</span><br><span class="line">    c = aint*bint</span><br><span class="line">torch.cuda.synchronize()</span><br><span class="line">time2  =time.time()</span><br><span class="line">print(&quot;int8: &quot;, time2-time1)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fp32:  0.002942323684692383</span><br><span class="line">int8:  0.0015864372253417969</span><br></pre></td></tr></table></figure>
+
+<p>怎么查看是否使用了Tensor Core:<br><a target="_blank" rel="noopener" href="https://discuss.pytorch.org/t/how-do-i-know-that-tensor-cores-used-in-pytorch-for-fp16-bfloat16-int8/169763/2">https://discuss.pytorch.org/t/how-do-i-know-that-tensor-cores-used-in-pytorch-for-fp16-bfloat16-int8/169763/2</a><br><a target="_blank" rel="noopener" href="https://forums.developer.nvidia.com/t/how-to-confirm-whether-tensor-core-is-working-or-not/70263">https://forums.developer.nvidia.com/t/how-to-confirm-whether-tensor-core-is-working-or-not/70263</a><br><a target="_blank" rel="noopener" href="https://discuss.pytorch.org/t/volta-tensor-core-pytorch/18320/8">https://discuss.pytorch.org/t/volta-tensor-core-pytorch/18320/8</a></p>
+<p><strong>应该需要使用专门的接口才能使用tensor core，直接这样乘法是不行的</strong></p>
 
     </div>
 
@@ -220,11 +229,11 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/04/09/hello-world/" rel="prev" title="Hello World">
-      <i class="fa fa-chevron-left"></i> Hello World
+    <a href="/2023/06/25/GPU%E6%9E%B6%E6%9E%84/" rel="prev" title="">
+      <i class="fa fa-chevron-left"></i> 
     </a></div>
       <div class="post-nav-item">
-    <a href="/2023/06/25/bayer2rgb/" rel="next" title="">
+    <a href="/2023/06/25/Linux%E5%AE%89%E8%A3%85Cuda/" rel="next" title="">
        <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -285,7 +294,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%BF%9D%E5%AD%98"><span class="nav-number">1.</span> <span class="nav-text">模型的保存</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#NVIDIA-GPU%E4%B8%8D%E5%90%8C%E7%B2%BE%E5%BA%A6%E8%AE%A1%E7%AE%97%E7%9A%84%E9%80%9F%E5%BA%A6%E5%AF%B9%E6%AF%94"><span class="nav-number">1.</span> <span class="nav-text">NVIDIA GPU不同精度计算的速度对比</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

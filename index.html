@@ -158,7 +158,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://justqj.github.io/2023/04/09/testmyblog/">
+    <link itemprop="mainEntityOfPage" href="https://justqj.github.io/2023/06/25/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -172,7 +172,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/04/09/testmyblog/" class="post-title-link" itemprop="url">testmyblog.md</a>
+            <a href="/2023/06/25/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/" class="post-title-link" itemprop="url">未命名</a>
         </h2>
 
         <div class="post-meta">
@@ -181,10 +181,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-04-09 21:57:58 / 修改时间：22:00:54" itemprop="dateCreated datePublished" datetime="2023-04-09T21:57:58+08:00">2023-04-09</time>
+              <time title="创建时间：2023-06-25 16:16:43" itemprop="dateCreated datePublished" datetime="2023-06-25T16:16:43+08:00">2023-06-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-12 22:06:25" itemprop="dateModified" datetime="2023-06-12T22:06:25+08:00">2023-06-12</time>
+              </span>
 
           
 
@@ -197,12 +203,52 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="模型的保存"><a href="#模型的保存" class="headerlink" title="模型的保存"></a>模型的保存</h1><ol>
-<li>保存训练好的模型最好load到cpu上再保存。</li>
-<li>使用torch.nn.DataParallel()训练的模型，注意保存时要去掉module模块，不然加载时也需要先用DataParallel()包裹才能加载。</li>
-</ol>
-<p>```<br>不去掉module保存：<br>torch.save(model.state_dict(), ‘validate.pth.tar’)<br>加载：<br>model = torch.nn.DataParallel(model)<br>state = torch.load(‘validate.pth.tar’)<br>model.load_state_dict(state)</p>
-<p>去掉module并在cpu上保存：<br>model = model.to(‘cpu’)<br>torch.save(model.module.state_dict(),’validate.pth.tar’)<br>加载：<br>state = torch.load(‘validate.pth.tar’)<br>model.load_state_dict(state</p>
+          <h1 id="Night-system"><a href="#Night-system" class="headerlink" title="Night system"></a>Night system</h1><p>用于分析nvidia gpu性能，可以在jetson上使用，跟随jetpack一起安装。<br>检测当前系统是否安装：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nsys --help</span><br></pre></td></tr></table></figure>
+<p>最简单的使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo nsys profile -t &lt;event to trace&gt; -o &lt;filename to record result&gt; myapp app_arguments</span><br><span class="line">#python 实例</span><br><span class="line">sudo nsys profile python test.py #-t 默认为 cuda, nvtx等，-o默认为在当前目录创建一个文件，例如得到文件 report1.nsys-rep</span><br><span class="line">nsys profile --trace=cuda,cudnn,cublas,osrt,nvtx --delay=60 python my_dnn_script.py</span><br><span class="line">nsys profile --trace=vulkan,osrt,nvtx --delay=60 ./myapp</span><br></pre></td></tr></table></figure>
+<p>分析得到的数据文件 report1.nsys-rep</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nsys stats report1.nsys-rep</span><br><span class="line"></span><br><span class="line"># 在运行程序时直接给出profile的数据</span><br><span class="line">nsys profile --stats=true &lt;application&gt;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://docs.nvidia.com/nsight-systems/UserGuide/index.html#example-single-command-lines">https://docs.nvidia.com/nsight-systems/UserGuide/index.html#example-single-command-lines</a></p>
+<h1 id="torch-profiler"><a href="#torch-profiler" class="headerlink" title="torch profiler"></a>torch profiler</h1><p> with profiler.profile(<br>             activities=[<br>                torch.profiler.ProfilerActivity.CPU,<br>                torch.profiler.ProfilerActivity.CUDA,<br>            ],<br>            # In this example with wait=1, warmup=1, active=2,<br>            # profiler will skip the first step/iteration,<br>            # start warming up on the second, record<br>            # the third and the forth iterations,<br>            # after which the trace will become available<br>            # and on_trace_ready (when set) is called;<br>            # the cycle repeats starting with the next step<br>            #<a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/profiler.html">https://pytorch.org/docs/stable/profiler.html</a><br>            #tensorboard –logdir=output –port=8989 通过本地chrome游览器打开profiler的结果，port默认为6006，被其他进程用了，所以要换一个port<br>            schedule = torch.profiler.schedule(<br>                wait=0,<br>                warmup=0,<br>                active=1,<br>                repeat=1),<br>            on_trace_ready=profiler.tensorboard_trace_handler(‘/home/tangpeng/ISPExperiment/ExperimentFile/3/output’),<br>            with_stack=True</p>
+<pre><code>    ) as profiler_:
+        with torch.no_grad():
+            t1 = time.perf_counter()    
+            decisions, decision_logits = self.model.policy_net(p_x_device)
+            t2 = time.perf_counter()
+            print(&quot;time used to policy net inference: &quot;, t2-t1)
+
+            t1 = time.perf_counter()
+            #print(&quot;================&gt;&quot;, p_x_device[0].device)
+            #decisions = (torch.rand((self.num_segments, 2, 1),dtype=p_x_device[0].dtype, device=p_x_device[0].device) &gt; self.random_threshold).float()
+            #print(decisions.shape)
+            #print(decisions)
+            rgb_modality_data = mainnet_make_data(bayer_images=selected_images,decisions=decisions, segment_number=self.num_segments, rgb_image_mean=rgb_image_mean,rgb_image_std=rgb_image_std,frames_per_segment=self.frames_per_segment)
+            m_x = [rgb_modality_data.to(self.device), p_x_device[1]]
+            
+            t2 = time.perf_counter()
+            print(&quot;time used to make main net data: &quot;, t2-t1)
+            t1 = time.perf_counter()
+            for i in range(self.num_segments):
+
+                tmp_x = ([m_x[m_i][i, ...] for m_i in range(2)])
+                all_logits.append(self.model.main_net.inference_forward(tmp_x, decisions[i]))  # NxC
+            
+            t2 = time.perf_counter()
+            print(&quot;time used to main net inference: &quot;, t2-t1)
+            final_logits = torch.stack(all_logits, dim=1).mean(dim=1)
+            decisions = decisions.permute((2, 0, 1))
+
+            selection_ratio = decisions.detach().mean(0).mean(0)
+            pred = torch.argmax(final_logits,dim=1).detach()
+            with open(logfile,&#39;a&#39;) as fd:
+                print(&quot;video index: &#123;&#125;, image selection ratio: &#123;&#125;, sound selecton ratio: &#123;&#125;, predict: &#123;&#125;&quot;.format(video_index,selection_ratio[0].item(),selection_ratio[1].item(),pred[0].item()), file=fd, flush=True)
+            msg = &quot;video index: &#123;&#125;, image selection ratio: &#123;&#125;, sound selecton ratio: &#123;&#125;, predict: &#123;&#125;&quot;.format(video_index,selection_ratio[0].item(),selection_ratio[1].item(),pred[0].item())
+            profiler_.step()
+            return msg
+</code></pre>
+<h1 id="Night-Compute"><a href="#Night-Compute" class="headerlink" title="Night Compute"></a>Night Compute</h1><p>按道理在JetPack中应该安装了，在CUDA路劲下，但是Jetson Xavier NX with JetPack4.6中没有。<br>参考：<br><a target="_blank" rel="noopener" href="https://forums.developer.nvidia.com/t/nsight-compute-target-platform-for-jetson/172804">https://forums.developer.nvidia.com/t/nsight-compute-target-platform-for-jetson/172804</a><br><a target="_blank" rel="noopener" href="https://developer.nvidia.com/nsight-compute">https://developer.nvidia.com/nsight-compute</a></p>
 
       
     </div>
@@ -222,7 +268,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://justqj.github.io/2023/04/09/hello-world/">
+    <link itemprop="mainEntityOfPage" href="https://justqj.github.io/2023/06/25/%E5%86%99linux%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97%E5%92%8Cdriver/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -236,7 +282,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/04/09/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
+            <a href="/2023/06/25/%E5%86%99linux%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97%E5%92%8Cdriver/" class="post-title-link" itemprop="url">未命名</a>
         </h2>
 
         <div class="post-meta">
@@ -245,10 +291,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-04-09 21:20:34 / 修改时间：21:18:54" itemprop="dateCreated datePublished" datetime="2023-04-09T21:20:34+08:00">2023-04-09</time>
+              <time title="创建时间：2023-06-25 16:16:43" itemprop="dateCreated datePublished" datetime="2023-06-25T16:16:43+08:00">2023-06-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-04 17:03:59" itemprop="dateModified" datetime="2023-06-04T17:03:59+08:00">2023-06-04</time>
+              </span>
 
           
 
@@ -261,20 +313,596 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+          <h2 id="Linux内核模块常用命令"><a href="#Linux内核模块常用命令" class="headerlink" title="Linux内核模块常用命令"></a>Linux内核模块常用命令</h2><ol>
+<li><p>查看当前的内核模块</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsmod</span><br></pre></td></tr></table></figure></li>
+<li><p>加载一个<code>xxx.ko</code>模块</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo insmod xxx.ko</span><br></pre></td></tr></table></figure></li>
+<li><p>卸载一个<code>xxx</code>模块</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo rmmod xxx</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>注：如果模块正在被使用或者出现错误是无法使用<code>rmmod</code>命令卸载的。</p>
+<h2 id="第一个Linux内核模块"><a href="#第一个Linux内核模块" class="headerlink" title="第一个Linux内核模块"></a>第一个Linux内核模块</h2><p>1.写一个<code>hello_module.c</code>模块文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;linux/module.h&gt; //necessary header file</span><br><span class="line">#include&lt;linux/init.h&gt;</span><br><span class="line"></span><br><span class="line">MODULE_LICENSE(&quot;GPL&quot;); </span><br><span class="line">MODULE_AUTHOR(&quot;TANG PENG&quot;);</span><br><span class="line">MODULE_DESCRIPTION(&quot;A HELLO MODULE TEST&quot;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">this function is called when the module is loaded into kernel</span><br><span class="line">*/</span><br><span class="line">static int __init hello_init(void)&#123;</span><br><span class="line">    printk(&quot;hello, my first kernel module!\n&quot;);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">this function is called when the module is removed from the kernel </span><br><span class="line">*/</span><br><span class="line">static void __exit hello_exit(void)&#123;</span><br><span class="line">    printk(&quot;goodbye, my module!\n&quot;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">module_init(hello_init);</span><br><span class="line">module_exit(hello_exit);</span><br></pre></td></tr></table></figure>
+<p>2.写一个<code>Makefile</code>编译该文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">obj-m += hello_module.o</span><br><span class="line"></span><br><span class="line">all:</span><br><span class="line">		make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules</span><br><span class="line"></span><br><span class="line">clean:</span><br><span class="line">		make -C /lib/moduels/$(shell uname -r)/build M=$(PWD) clean</span><br></pre></td></tr></table></figure>
+<p>使用<code>make</code>命令后，目录下会出现一个<code>hello_module.ko</code>的文件<br>注：<code>obj-m</code>是Linux内核模块的集合</p>
+<p>3.加载该模块</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo insmod hello_module.ko </span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<h2 id="写一个driver"><a href="#写一个driver" class="headerlink" title="写一个driver"></a>写一个driver</h2><p>1.<code>driver</code>一般会在<code>/dev/*</code>目录下生成相应可供上层应用读写的设备文件，所以<code>driver</code>本身需要的提供文件读写的相关方法，包括<code>open()</code>, <code>close()</code>, <code>write()</code>, <code>read()</code>以供Linux系统调用。<br>2.写一个<code>hello_dev.c</code>文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;linux/module.h&gt;</span><br><span class="line">#include&lt;linux/init.h&gt;</span><br><span class="line">#include&lt;linux/fs.h&gt;</span><br><span class="line">#include&lt;linux/cdev.h&gt;</span><br><span class="line">#include&lt;linux/uaccess.h&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">MODULE_LICENSE(&quot;GPL&quot;);</span><br><span class="line">MODULE_AUTHOR(&quot;TANG PENG&quot;);</span><br><span class="line">MODULE_DESCRIPTION(&quot;A HELLO DRIVER TEST&quot;);</span><br><span class="line"></span><br><span class="line">#define DEVICE_NUMBER 611</span><br><span class="line">#define DRIVER_NAME &quot;HelloDriver&quot;</span><br><span class="line">#define DRIVER_CLASS &quot;HelloClass&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">static dev_t hello_device_number;</span><br><span class="line">static struct class *hello_class;</span><br><span class="line">static struct cdev hello_device;</span><br><span class="line"></span><br><span class="line">static char buffer[255];</span><br><span class="line">static int buffer_pointer;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">read data from the buffer</span><br><span class="line">*/</span><br><span class="line">static ssize_t driver_read(struct file *File, char *user_buffer, size_t count, loff_t *offset)&#123;</span><br><span class="line">    int to_copy, not_copied, delta;</span><br><span class="line">    to_copy = min(count, buffer_pointer);</span><br><span class="line">    not_copied = copy_to_user(user_buffer, buffer, to_copy);</span><br><span class="line">    delta = to_copy-not_copied;</span><br><span class="line">    return delta;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">write data the buffer</span><br><span class="line">*/</span><br><span class="line">static ssize_t driver_write(struct file *File, const char *user_buffer, size_t count, loff_t *offset)&#123;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    int to_copy, not_copied, delta;</span><br><span class="line"></span><br><span class="line">    to_copy = min(count, sizeof(buffer));</span><br><span class="line">    not_copied = copy_from_user(buffer, user_buffer, to_copy);</span><br><span class="line">    buffer_pointer = to_copy;</span><br><span class="line">    delta = to_copy-not_copied;</span><br><span class="line"></span><br><span class="line">    return delta;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">static int driver_open(struct inode *device_file, struct file *instance)&#123;</span><br><span class="line">    printk(&quot;hello device open function was called!\n&quot;);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static int driver_close(struct inode *device_file, struct file *instance)&#123;</span><br><span class="line">    printk(&quot;hello device close function was called!\n&quot;);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/*we need to provide these basic function to the kernel to call for writing and reading the device file*/</span><br><span class="line">static struct file_operations fops = &#123;</span><br><span class="line">        .owner = THIS_MODULE,</span><br><span class="line">        .open = driver_open,</span><br><span class="line">        .release = driver_close,</span><br><span class="line">        .read = driver_read,</span><br><span class="line">        .write = driver_write</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">this function is called when the module is loaded into kernel</span><br><span class="line">*/</span><br><span class="line">static int __init mydriver_init(void)&#123;</span><br><span class="line">    printk(&quot;hello, driver init!\n&quot;);</span><br><span class="line">    /*allocate a device number*/</span><br><span class="line">    if(alloc_chrdev_region(&amp;hello_device_number, 0,1,DRIVER_NAME)&lt;0)&#123;</span><br><span class="line">        printk(&quot;device number alloc failed!\n&quot;);</span><br><span class="line">        return -1;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    printk(&quot;device number Major: %d, Minor:%d was registered!\n&quot;, hello_device_number&gt;&gt;20, hello_device_number&amp;&amp;0xfffff);</span><br><span class="line"></span><br><span class="line">    /*create device class*/</span><br><span class="line">    if((hello_class=class_create(THIS_MODULE, DRIVER_CLASS)) == NULL)&#123;</span><br><span class="line">        printk(&quot;device class can not be created!\n&quot;);</span><br><span class="line">        goto ClassError;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /*create a device and device file, the return is device struct*/</span><br><span class="line">    if(device_create(hello_class, NULL, hello_device_number, NULL, DRIVER_NAME)==NULL)&#123;</span><br><span class="line">        printk(&quot;can not create device file!\n&quot;);</span><br><span class="line">        goto FileError;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /*init device file, add file to /dev/ */</span><br><span class="line">    cdev_init(&amp;hello_device, &amp;fops);</span><br><span class="line"></span><br><span class="line">    /*register device to kernel*/</span><br><span class="line">    if(cdev_add(&amp;hello_device, hello_device_number, 1) == -1)&#123;</span><br><span class="line">        printk(&quot;register of device to kernel failed!\n&quot;);</span><br><span class="line">        goto AddError;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">AddError:</span><br><span class="line">    device_destroy(hello_class, hello_device_number);</span><br><span class="line">FileError:</span><br><span class="line">    class_destroy(hello_class);</span><br><span class="line">ClassError:</span><br><span class="line">    unregister_chrdev_region(hello_device_number, 1);</span><br><span class="line">    return -1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">this function is called when the module is removed from the kernel </span><br><span class="line">*/</span><br><span class="line">static void __exit mydriver_exit(void)&#123;</span><br><span class="line">    cdev_del(&amp;hello_device);</span><br><span class="line">    device_destroy(hello_class, hello_device_number);</span><br><span class="line">    class_destroy(hello_class);</span><br><span class="line">    unregister_chrdev_region(hello_device_number,1);</span><br><span class="line"></span><br><span class="line">    printk(&quot;goodbye, my module!\n&quot;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">module_init(mydriver_init);</span><br><span class="line">module_exit(mydriver_exit);</span><br></pre></td></tr></table></figure>
+<p>2.写一个<code>Makefile</code>并编译加载</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">obj-m += hello_dev.o</span><br><span class="line"></span><br><span class="line">all:</span><br><span class="line">		make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules</span><br><span class="line"></span><br><span class="line">clean:</span><br><span class="line">		make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+      
+    </div>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://justqj.github.io/2023/06/25/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%9B%B4%E6%96%B0%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流年">
+      <meta itemprop="description" content="记录个人学习的知识和技术">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="流年的个人博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/25/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%9B%B4%E6%96%B0%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-06-25 16:16:43" itemprop="dateCreated datePublished" datetime="2023-06-25T16:16:43+08:00">2023-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-15 21:21:26" itemprop="dateModified" datetime="2023-03-15T21:21:26+08:00">2023-03-15</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="更换清华源"><a href="#更换清华源" class="headerlink" title="更换清华源"></a>更换清华源</h1><p><a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/help/raspbian/">https://mirrors.tuna.tsinghua.edu.cn/help/raspbian/</a></p>
+<ol>
+<li>uname -m 查看架构，即是armv71(32位)还是aarch64(64位)</li>
+<li>lsb_release -u 查看版本，目前最新版bellseye</li>
+<li>将/etc/apt/sources.list备份，然后修改为清华源，目前aarch64的使用下面的镜像<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye main contrib non-free</span><br><span class="line"># deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye main contrib non-free</span><br><span class="line"></span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye-updates main contrib non-free</span><br><span class="line"># deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye-updates main contrib non-free</span><br><span class="line"></span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye-backports main contrib non-free</span><br><span class="line"># deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye-backports main contrib non-free</span><br><span class="line"></span><br><span class="line"># deb https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security main contrib non-free</span><br><span class="line"># # deb-src https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security main contrib non-free</span><br><span class="line"></span><br><span class="line">deb https://security.debian.org/debian-security bullseye-security main contrib non-free</span><br><span class="line"># deb-src https://security.debian.org/debian-security bullseye-security main contrib non-free</span><br></pre></td></tr></table></figure></li>
+<li>在/etc/apt/sources.list.d/raspi.list中，注释掉其中的内容，然后加入<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/raspberrypi/ bullseye main </span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://justqj.github.io/2023/06/25/%E4%BD%BF%E7%94%A8tensorrt/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流年">
+      <meta itemprop="description" content="记录个人学习的知识和技术">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="流年的个人博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/25/%E4%BD%BF%E7%94%A8tensorrt/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-06-25 16:16:43" itemprop="dateCreated datePublished" datetime="2023-06-25T16:16:43+08:00">2023-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-24 17:23:25" itemprop="dateModified" datetime="2023-03-24T17:23:25+08:00">2023-03-24</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="安装tensorrt"><a href="#安装tensorrt" class="headerlink" title="安装tensorrt"></a>安装tensorrt</h1><p>在jetson上，最新的jetson jetpack上包含了tensorrt，所以在使用的时候需要将系统中的tensorrt导入到环境变量，才能在虚拟环境中使用。<br>例如在我的jetson nx上，tensorrt在/usr/lib/python3.8/dist-packages中，所以将其加入.bashrc中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">export PYTHONPATH=/usr/lib/python3.8/dist-packages:$PYTHONPATH</span><br><span class="line">source ~/.bashrc</span><br><span class="line"></span><br><span class="line">conda activate virtual-env</span><br><span class="line">import tensorrt #验证是否可以使用</span><br></pre></td></tr></table></figure>
+<p>参考 <a target="_blank" rel="noopener" href="https://docs.donkeycar.com/guide/robot_sbc/tensorrt_jetson_nano/">https://docs.donkeycar.com/guide/robot_sbc/tensorrt_jetson_nano/</a></p>
+<h1 id="tensor支持LSTMcell"><a href="#tensor支持LSTMcell" class="headerlink" title="tensor支持LSTMcell"></a>tensor支持LSTMcell</h1><p><a target="_blank" rel="noopener" href="https://github.com/pytorch/TensorRT/releases">https://github.com/pytorch/TensorRT/releases</a><br><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/onnx_supported_aten_ops.html">https://pytorch.org/docs/stable/onnx_supported_aten_ops.html</a><br>可能是pytorch的版本低了，不支持到处lstmcell的onxx</p>
+<h1 id="使用torch2trt报错"><a href="#使用torch2trt报错" class="headerlink" title="使用torch2trt报错"></a>使用torch2trt报错</h1><p><a target="_blank" rel="noopener" href="https://forums.developer.nvidia.com/t/torch2trt-error-number-of-kernel-weights-does-not-match-tensor-dimensions/244841">https://forums.developer.nvidia.com/t/torch2trt-error-number-of-kernel-weights-does-not-match-tensor-dimensions/244841</a> 相关帖子，但是还没有解决</p>
+<p>使用trtexec将onnx转为trt，然后<br>/usr/src/tensorrt/bin/trtexec –onnx=/home/tangpeng/LightModels/onnx_models/shufflenet-bayer-cuda.onnx –saveEngine=/home/tangpeng/LightModels/trt_models/shufflenet-bayer-cuda.trt –explicitBatch –fp16</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://justqj.github.io/2023/06/25/%E5%A3%B0%E9%9F%B3%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流年">
+      <meta itemprop="description" content="记录个人学习的知识和技术">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="流年的个人博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/25/%E5%A3%B0%E9%9F%B3%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-06-25 16:16:43" itemprop="dateCreated datePublished" datetime="2023-06-25T16:16:43+08:00">2023-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-02-27 16:06:16" itemprop="dateModified" datetime="2023-02-27T16:06:16+08:00">2023-02-27</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="主要流程"><a href="#主要流程" class="headerlink" title="主要流程"></a>主要流程</h1><ol>
+<li>麦克风中的电磁铁将声波转化为电信号，这里得到的是模拟信号</li>
+<li>然后通过声卡（主要由ADC和DAC组成，就是模拟信号和数字信号的转换）芯片来进行编解码，方便信号的存储与播放。</li>
+<li>一般USB麦克风是结合了麦克风和声卡，所以输出的就是数字信号，不需要再使用声卡。</li>
+<li>所以usb麦克风可以直接连接到jetson上录音。<a target="_blank" rel="noopener" href="https://forums.developer.nvidia.com/t/jetson-xavier-nx-audio-recording/126301">讨论</a></li>
+<li>codec在软件层面一般指可以对声音数字信号流进行压缩和解压，方便保存。而在硬件层面，就是指声卡中的ADC和DAC组成的部分。<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Audio_codec">参考</a></li>
+</ol>
+<h1 id="使用库的选择"><a href="#使用库的选择" class="headerlink" title="使用库的选择"></a>使用库的选择</h1><p>python: pyaudio<br>c++: alsa <a target="_blank" rel="noopener" href="https://gist.github.com/albanpeignier/104902">https://gist.github.com/albanpeignier/104902</a><br>c++: portAudio 上面的pyaudio就是这个库的python封装<br>c++: 参考arecord的源码写</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://justqj.github.io/2023/06/25/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流年">
+      <meta itemprop="description" content="记录个人学习的知识和技术">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="流年的个人博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/25/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-06-25 16:16:43" itemprop="dateCreated datePublished" datetime="2023-06-25T16:16:43+08:00">2023-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-04 21:19:50" itemprop="dateModified" datetime="2023-03-04T21:19:50+08:00">2023-03-04</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="常见内存错误"><a href="#常见内存错误" class="headerlink" title="常见内存错误"></a>常见内存错误</h1><p>出现以下形式的错误，都可能是内存泄漏引起的，包括非法访问（尤其是非法写）、没有delelte</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">corrupted size vs prev_size</span><br><span class="line">malloc_consolidate(): invalid chunk size</span><br><span class="line">segmentation fault</span><br><span class="line">munmap_chunk():invalid pointer</span><br></pre></td></tr></table></figure>
+<h1 id="查找方法"><a href="#查找方法" class="headerlink" title="查找方法"></a>查找方法</h1><ol>
+<li>gdb 调试</li>
+<li>Valgrind 专门由于查找内存情况</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://justqj.github.io/2023/06/25/%E5%A6%82%E4%BD%95%E6%9B%B4%E5%A5%BD%E5%9C%B0%E6%B5%8B%E8%AF%95%E6%B5%8B%E9%87%8F%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E6%97%B6%E9%97%B4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流年">
+      <meta itemprop="description" content="记录个人学习的知识和技术">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="流年的个人博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/25/%E5%A6%82%E4%BD%95%E6%9B%B4%E5%A5%BD%E5%9C%B0%E6%B5%8B%E8%AF%95%E6%B5%8B%E9%87%8F%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E6%97%B6%E9%97%B4/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-06-25 16:16:43" itemprop="dateCreated datePublished" datetime="2023-06-25T16:16:43+08:00">2023-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-05-29 17:24:08" itemprop="dateModified" datetime="2023-05-29T17:24:08+08:00">2023-05-29</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="CPU程序"><a href="#CPU程序" class="headerlink" title="CPU程序"></a>CPU程序</h2><p>嵌入式参考：<a target="_blank" rel="noopener" href="https://www.embedded.com/tutorial-techniques-for-measuring-execution-time-and-real-time-performance-part-1/">https://www.embedded.com/tutorial-techniques-for-measuring-execution-time-and-real-time-performance-part-1/</a></p>
+<h2 id="GPU程序"><a href="#GPU程序" class="headerlink" title="GPU程序"></a>GPU程序</h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://justqj.github.io/2023/06/25/%E5%B0%86driver%E5%8A%A0%E5%85%A5%E5%88%B0devfreq%E6%A1%86%E6%9E%B6%E4%B8%AD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流年">
+      <meta itemprop="description" content="记录个人学习的知识和技术">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="流年的个人博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/25/%E5%B0%86driver%E5%8A%A0%E5%85%A5%E5%88%B0devfreq%E6%A1%86%E6%9E%B6%E4%B8%AD/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-06-25 16:16:43" itemprop="dateCreated datePublished" datetime="2023-06-25T16:16:43+08:00">2023-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-04 17:43:23" itemprop="dateModified" datetime="2023-06-04T17:43:23+08:00">2023-06-04</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Devfreq框架"><a href="#Devfreq框架" class="headerlink" title="Devfreq框架"></a>Devfreq框架</h2><p>1.devfreq框架主要用于对支持OPP(Operating Performance Points)功能的非CPU设备（如GPU，内存等）进行DVFS控制，以节约功耗。OPP功能就是指支持频率电压对，即可以通过频率来找到相应的电压，从而同时降低频率和电压。<br>2.Linux devfreq框架流程图：<br><img src="/imgs/devfreq.jpg" alt="devfreq"><br>整个控制分为三部分：devfreq framework监控整个程序的运行；governor提供目标算法；opp device提供本身的负载信息和频率设置方法。devfreq framework根据时间间隔从governor中获取当前应该设置的频率值，governor通过获取opp device当前的负载状态并通过一定的算法算出当前需要设置的频率值并返回给devfreq frameowrk。然后devfreq framework通过调用opp device注册的函数设置该频率值，完成一次DVFS设置。</p>
+<h2 id="将一个设备加入Devfreq框架"><a href="#将一个设备加入Devfreq框架" class="headerlink" title="将一个设备加入Devfreq框架"></a>将一个设备加入Devfreq框架</h2><p>1.Linux devfreq api大全: <a target="_blank" rel="noopener" href="https://docs.kernel.org/driver-api/devfreq.html">https://docs.kernel.org/driver-api/devfreq.html</a><br>2.需要实现的基本要素</p>
+<ul>
+<li><p>填充一个<code>devfreq_dev_profile</code>结构体</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">struct devfreq_dev_profile &#123;</span><br><span class="line">    unsigned long initial_freq;</span><br><span class="line">    unsigned int polling_ms; </span><br><span class="line">    enum devfreq_timer timer;</span><br><span class="line">    bool is_cooling_device;</span><br><span class="line">    int (*target)(struct device *dev, unsigned long *freq, u32 flags); //function to set the frequency</span><br><span class="line">    int (*get_dev_status)(struct device *dev, struct devfreq_dev_status *stat); //function to get the device status</span><br><span class="line">    int (*get_cur_freq)(struct device *dev, unsigned long *freq); //function to get the device current frequency </span><br><span class="line">    void (*exit)(struct device *dev);</span><br><span class="line">    unsigned long *freq_table; //the frequency table contains all freqencies the device support</span><br><span class="line">    unsigned int max_state; //freq_table size</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>一般<code>timer, is_cooling_device, exit</code>不同填充，其他都要填充。</p>
+</li>
+<li><p>在初始化device driver的函数中调用<code>devfreq_add_device()</code>函数将device注册到devfreq框架中  </p>
+</li>
+<li><p>在卸载device driver的函数中调用<code>devfreq_remove_device()</code>函数从devfreq框架中删除device</p>
+</li>
+</ul>
+<h2 id="一个简单示例"><a href="#一个简单示例" class="headerlink" title="一个简单示例"></a>一个简单示例</h2><p>1.写一个driver，并将其加入到devfreq框架中。这里的driver实际上没有实现<code>probe()</code>，也就是没有和真正地设备相关联，只是一个模拟。</p>
+<p>2.写一个<code>devfreq_test_dev.c</code>文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;linux/module.h&gt;</span><br><span class="line">#include&lt;linux/init.h&gt;</span><br><span class="line">#include&lt;linux/fs.h&gt;</span><br><span class="line">#include&lt;linux/cdev.h&gt;</span><br><span class="line">#include&lt;linux/uaccess.h&gt;</span><br><span class="line">#include&lt;linux/devfreq.h&gt;</span><br><span class="line">#include&lt;linux/device.h&gt;</span><br><span class="line"></span><br><span class="line">MODULE_LICENSE(&quot;GPL&quot;);</span><br><span class="line">MODULE_AUTHOR(&quot;TANG PENG&quot;);</span><br><span class="line">MODULE_DESCRIPTION(&quot;Virtual device to test Devfreq framework&quot;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#define DRIVER_NAME &quot;DevfreqDevice&quot;</span><br><span class="line">#define DRIVER_CLASS &quot;DevfreqClass&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">static dev_t devfreq_device_number;</span><br><span class="line">static struct class *devfreq_class;</span><br><span class="line">static struct cdev devfreq_dev;</span><br><span class="line">static struct device *devfreq_device;</span><br><span class="line">static char buffer[255];</span><br><span class="line">static int buffer_pointer;</span><br><span class="line">static unsigned long freqs_table[4] = &#123;500, 1000, 2000, 3000&#125;;</span><br><span class="line">static unsigned long current_freq;</span><br><span class="line">static struct devfreq *devfreq_;</span><br><span class="line">/*</span><br><span class="line">read data from the buffer</span><br><span class="line">*/</span><br><span class="line">static ssize_t driver_read(struct file *File, char *user_buffer, size_t count, loff_t *offset)&#123;</span><br><span class="line">    int to_copy, not_copied, delta;</span><br><span class="line">    to_copy = min(count, buffer_pointer);</span><br><span class="line">    not_copied = copy_to_user(user_buffer, buffer, to_copy);</span><br><span class="line">    delta = to_copy-not_copied;</span><br><span class="line">    return delta;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">write data the buffer</span><br><span class="line">*/</span><br><span class="line">static ssize_t driver_write(struct file *File, const char *user_buffer, size_t count, loff_t *offset)&#123;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    int to_copy, not_copied, delta;</span><br><span class="line"></span><br><span class="line">    to_copy = min(count, sizeof(buffer));</span><br><span class="line">    not_copied = copy_from_user(buffer, user_buffer, to_copy);</span><br><span class="line">    buffer_pointer = to_copy;</span><br><span class="line">    delta = to_copy-not_copied;</span><br><span class="line"></span><br><span class="line">    return delta;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">static int driver_open(struct inode *device_file, struct file *instance)&#123;</span><br><span class="line">    printk(&quot;devfreq test device open function was called!\n&quot;);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static int driver_close(struct inode *device_file, struct file *instance)&#123;</span><br><span class="line">    printk(&quot;devfreq test device close function was called!\n&quot;);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static struct file_operations fops = &#123;</span><br><span class="line">        .owner = THIS_MODULE,</span><br><span class="line">        .open = driver_open,</span><br><span class="line">        .release = driver_close,</span><br><span class="line">        .read = driver_read,</span><br><span class="line">        .write = driver_write</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">/*set freqency to the device*/</span><br><span class="line">static int devfreq_test_scale_target(struct device *dev, unsigned long *freq, u32 flags)&#123;</span><br><span class="line">    current_freq = *freq;</span><br><span class="line">    printk(&quot;set devfreq test device frequency to %ld!!\n&quot;, current_freq);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/*get status*/</span><br><span class="line">static int devfreq_test_get_dev_status(struct device *dev, struct devfreq_dev_status *stat)&#123;</span><br><span class="line">    stat-&gt;total_time = 1000;</span><br><span class="line">    stat-&gt;busy_time = 500;</span><br><span class="line">    stat-&gt;current_frequency = current_freq;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/*get current freq*/</span><br><span class="line">static int devfreq_test_get_cur_freq(struct device *dev, unsigned long *freq)&#123;</span><br><span class="line">    *freq = current_freq;</span><br><span class="line">    return 0;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/*fill the profile*/</span><br><span class="line">static struct devfreq_dev_profile this_profile = &#123;</span><br><span class="line">        .polling_ms = 1000,</span><br><span class="line">        .target = devfreq_test_scale_target,</span><br><span class="line">        .get_dev_status = devfreq_test_get_dev_status,</span><br><span class="line">        .get_cur_freq = devfreq_test_get_cur_freq,</span><br><span class="line">        .freq_table = freqs_table,</span><br><span class="line">        .max_state = 4</span><br><span class="line"></span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">this function is to add device to devfreq framework</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">int add_to_devfreq(struct device *dev)&#123;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    const char *gover_name;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    gover_name = &quot;userspace&quot;;</span><br><span class="line">    current_freq = freqs_table[0];</span><br><span class="line">    this_profile.initial_freq = current_freq;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    printk(&quot;freqency table: %d, %d, %d, %d!\n&quot;, (this_profile.freq_table)[0],(this_profile.freq_table)[1],(this_profile.freq_table)[2],(this_profile.freq_table)[3]);</span><br><span class="line"></span><br><span class="line">    devfreq_ = devfreq_add_device(dev, &amp;this_profile, gover_name, NULL);</span><br><span class="line">    if(IS_ERR(devfreq_))</span><br><span class="line">    &#123;</span><br><span class="line">        printk(&quot;add devfreq failed!\n&quot;);</span><br><span class="line">        devfreq_ = NULL;</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">this function is called when the module is loaded into kernel</span><br><span class="line">*/</span><br><span class="line">static int __init mydriver_init(void)&#123;</span><br><span class="line">    printk(&quot;hello, driver init!\n&quot;);</span><br><span class="line">    /*allocate a device number*/</span><br><span class="line">    if(alloc_chrdev_region(&amp;devfreq_device_number, 0,1,DRIVER_NAME)&lt;0)&#123;</span><br><span class="line">        printk(&quot;device number alloc failed!\n&quot;);</span><br><span class="line">        return -1;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    printk(&quot;device number Major: %d, Minor:%d was registered!\n&quot;, devfreq_device_number&gt;&gt;20, devfreq_device_number&amp;&amp;0xfffff);</span><br><span class="line"></span><br><span class="line">    /*create device class*/</span><br><span class="line">    if((devfreq_class=class_create(THIS_MODULE, DRIVER_CLASS)) == NULL)&#123;</span><br><span class="line">        printk(&quot;device class can not be created!\n&quot;);</span><br><span class="line">        goto ClassError;</span><br><span class="line">    &#125;</span><br><span class="line">    // https://manpages.debian.org/jessie/linux-manual-3.16/device_create.9.en.html</span><br><span class="line">    /* create a device with device number*/</span><br><span class="line">    devfreq_device = device_create(devfreq_class, NULL, devfreq_device_number, NULL, DRIVER_NAME);</span><br><span class="line"></span><br><span class="line">    if(devfreq_device==NULL)&#123;</span><br><span class="line">        printk(&quot;can not create device file!\n&quot;);</span><br><span class="line">        goto FileError;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /*init device file*/</span><br><span class="line">    cdev_init(&amp;devfreq_dev, &amp;fops);</span><br><span class="line"></span><br><span class="line">    /*register device to kernel*/</span><br><span class="line">    if(cdev_add(&amp;devfreq_dev, devfreq_device_number, 1) == -1)&#123;</span><br><span class="line">        printk(&quot;register of device to kernel failed!\n&quot;);</span><br><span class="line">        goto AddError;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /*add to devfreq framework*/</span><br><span class="line">    if(add_to_devfreq(devfreq_device))&#123;</span><br><span class="line">        goto AddError;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">AddError:</span><br><span class="line">    device_destroy(devfreq_class, devfreq_device_number);</span><br><span class="line">FileError:</span><br><span class="line">    class_destroy(devfreq_class);</span><br><span class="line">ClassError:</span><br><span class="line">    unregister_chrdev_region(devfreq_device_number, 1);</span><br><span class="line">    return -1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">this function is called when the module is removed from the kernel </span><br><span class="line">*/</span><br><span class="line">static void __exit mydriver_exit(void)&#123;</span><br><span class="line"></span><br><span class="line">    devfreq_remove_device(devfreq_);</span><br><span class="line"></span><br><span class="line">    cdev_del(&amp;devfreq_dev);</span><br><span class="line">    device_destroy(devfreq_class, devfreq_device_number);</span><br><span class="line">    class_destroy(devfreq_class);</span><br><span class="line">    unregister_chrdev_region(devfreq_device_number,1);</span><br><span class="line"></span><br><span class="line">    printk(&quot;goodbye, my module!\n&quot;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">module_init(mydriver_init);</span><br><span class="line">module_exit(mydriver_exit);</span><br></pre></td></tr></table></figure>
+<p>3.写一个<code>Makefile</code>文件编译加载模块</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">obj-m += devfreq_test_dev.o</span><br><span class="line"></span><br><span class="line">all:</span><br><span class="line">		make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules</span><br><span class="line"></span><br><span class="line">clean:</span><br><span class="line">		make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean</span><br></pre></td></tr></table></figure>
+<p>4.加载模块后的情况<br>加载模块后，会生成<code>/sys/devices/virtual/DevfreqClass/DevfreqDevice/DevfreqDevice/</code>文件目录，这个目录下就是devfreq框架生成的供上层应用查看和调用的文件接口。我们这里使用的是<code>userspace  governor</code>，所以和出现一个<code>userspace</code>目录，里面有一个<code>set_freq</code>文件，可以通过写这个文件来修改频率（本质上是最后就是调用什么代码中填充的<code>target()</code>方法）。下面的图片展示了<code>userspace governor</code>下基本的调频调用路径。<br><img src="imgs/devfreq_userspace.png" alt="devfreq_userspace"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://justqj.github.io/2023/06/25/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E8%A3%85torch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流年">
+      <meta itemprop="description" content="记录个人学习的知识和技术">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="流年的个人博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/25/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E8%A3%85torch/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-06-25 16:16:30" itemprop="dateCreated datePublished" datetime="2023-06-25T16:16:30+08:00">2023-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-05-15 19:50:10" itemprop="dateModified" datetime="2023-05-15T19:50:10+08:00">2023-05-15</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>pytorch官网 <a target="_blank" rel="noopener" href="https://pytorch.org/get-started/locally/">https://pytorch.org/get-started/locally/</a><br>使用pip安装最方便，cu116是机器的cuda版本11.6，通过nvidia-smi安装<br>pip3 install torch torchvision torchaudio –extra-index-url <a target="_blank" rel="noopener" href="https://download.pytorch.org/whl/cu116">https://download.pytorch.org/whl/cu116</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://justqj.github.io/2023/06/25/%E6%B5%8B%E9%87%8FDNN%E6%A8%A1%E5%9E%8B%E5%9C%A8GPU%E4%B8%8A%E7%9A%84%E6%97%B6%E9%97%B4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="流年">
+      <meta itemprop="description" content="记录个人学习的知识和技术">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="流年的个人博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/25/%E6%B5%8B%E9%87%8FDNN%E6%A8%A1%E5%9E%8B%E5%9C%A8GPU%E4%B8%8A%E7%9A%84%E6%97%B6%E9%97%B4/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-06-25 16:16:30" itemprop="dateCreated datePublished" datetime="2023-06-25T16:16:30+08:00">2023-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-12 15:18:36" itemprop="dateModified" datetime="2023-06-12T15:18:36+08:00">2023-06-12</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="精确地测量DNN的时间"><a href="#精确地测量DNN的时间" class="headerlink" title="精确地测量DNN的时间"></a>精确地测量DNN的时间</h2><p>参考：<a target="_blank" rel="noopener" href="https://deci.ai/blog/measure-inference-time-deep-neural-networks/">https://deci.ai/blog/measure-inference-time-deep-neural-networks/</a></p>
+<ol>
+<li>要进行warmup以唤醒GPU</li>
+<li>要进行synchronize()以进行同步</li>
+<li>要进行多次测量以进行平均</li>
+<li>inference的时间不应该加上数据拷贝的时间</li>
+</ol>
+<p>参考代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">def measure_dnn_latency(model, input_sample):</span><br><span class="line">    model.eval()</span><br><span class="line">    model.cuda()</span><br><span class="line">    input_sample.cuda() #先移动数据</span><br><span class="line"></span><br><span class="line">    starter, ender = torch.cuda.Event(enable_timing=True),torch.cuda.Event(enable_timing=True)</span><br><span class="line">    time_records = []</span><br><span class="line">    interations = 30</span><br><span class="line">    with torch.no_grad():</span><br><span class="line">        for _ in range(10):</span><br><span class="line">            out = model.direct_forward(input_sample) #warm up</span><br><span class="line"></span><br><span class="line">        for _ in range(interations): #more interation</span><br><span class="line">            starter.record()</span><br><span class="line">            out = model.direct_forward(input_sample)</span><br><span class="line">            ender.record()</span><br><span class="line">            torch.cuda.synchronize()  #是为了下一句正确，而上面不需要同步，直接记录的是kernel的时间</span><br><span class="line">            cost_time = starter.elapsed_time(ender)</span><br><span class="line">            time_records.append(cost_time)</span><br><span class="line"></span><br><span class="line">    print(&quot;cost times : &quot;, time_records) #单位是ms</span><br><span class="line">    print(&quot;avg cost: &quot;, sum(time_records)/interations)  </span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -291,6 +919,9 @@
 
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
 
 
 
@@ -355,7 +986,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

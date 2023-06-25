@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"justqj.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="模型的保存 保存训练好的模型最好load到cpu上再保存。 使用torch.nn.DataParallel()训练的模型，注意保存时要去掉module模块，不然加载时也需要先用DataParallel()包裹才能加载。  &#96;&#96;&#96;不去掉module保存：torch.save(model.state_dict(), ‘validate.pth.tar’)加载：model &#x3D; torch.nn.Data">
+  <meta name="description" content="安装tensorrt在jetson上，最新的jetson jetpack上包含了tensorrt，所以在使用的时候需要将系统中的tensorrt导入到环境变量，才能在虚拟环境中使用。例如在我的jetson nx上，tensorrt在&#x2F;usr&#x2F;lib&#x2F;python3.8&#x2F;dist-packages中，所以将其加入.bashrc中。 12345export PYTHONPATH&#x3D;&#x2F;usr&#x2F;lib&#x2F;py">
 <meta property="og:type" content="article">
-<meta property="og:title" content="testmyblog.md">
-<meta property="og:url" content="https://justqj.github.io/2023/04/09/testmyblog/index.html">
+<meta property="og:title" content="流年的个人博客">
+<meta property="og:url" content="https://justqj.github.io/2023/06/25/%E4%BD%BF%E7%94%A8tensorrt/index.html">
 <meta property="og:site_name" content="流年的个人博客">
-<meta property="og:description" content="模型的保存 保存训练好的模型最好load到cpu上再保存。 使用torch.nn.DataParallel()训练的模型，注意保存时要去掉module模块，不然加载时也需要先用DataParallel()包裹才能加载。  &#96;&#96;&#96;不去掉module保存：torch.save(model.state_dict(), ‘validate.pth.tar’)加载：model &#x3D; torch.nn.Data">
+<meta property="og:description" content="安装tensorrt在jetson上，最新的jetson jetpack上包含了tensorrt，所以在使用的时候需要将系统中的tensorrt导入到环境变量，才能在虚拟环境中使用。例如在我的jetson nx上，tensorrt在&#x2F;usr&#x2F;lib&#x2F;python3.8&#x2F;dist-packages中，所以将其加入.bashrc中。 12345export PYTHONPATH&#x3D;&#x2F;usr&#x2F;lib&#x2F;py">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-04-09T13:57:58.000Z">
-<meta property="article:modified_time" content="2023-04-09T14:00:54.075Z">
+<meta property="article:published_time" content="2023-06-25T08:16:43.422Z">
+<meta property="article:modified_time" content="2023-03-24T09:23:25.075Z">
 <meta property="article:author" content="流年">
 <meta property="article:tag" content="个人笔记、计算机技术、备忘录">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://justqj.github.io/2023/04/09/testmyblog/">
+<link rel="canonical" href="https://justqj.github.io/2023/06/25/%E4%BD%BF%E7%94%A8tensorrt/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>testmyblog.md | 流年的个人博客</title>
+  <title> | 流年的个人博客</title>
   
 
 
@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://justqj.github.io/2023/04/09/testmyblog/">
+    <link itemprop="mainEntityOfPage" href="https://justqj.github.io/2023/06/25/%E4%BD%BF%E7%94%A8tensorrt/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -174,7 +174,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          testmyblog.md
+          
         </h1>
 
         <div class="post-meta">
@@ -183,10 +183,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-04-09 21:57:58 / 修改时间：22:00:54" itemprop="dateCreated datePublished" datetime="2023-04-09T21:57:58+08:00">2023-04-09</time>
+              <time title="创建时间：2023-06-25 16:16:43" itemprop="dateCreated datePublished" datetime="2023-06-25T16:16:43+08:00">2023-06-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-24 17:23:25" itemprop="dateModified" datetime="2023-03-24T17:23:25+08:00">2023-03-24</time>
+              </span>
 
           
 
@@ -199,12 +205,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="模型的保存"><a href="#模型的保存" class="headerlink" title="模型的保存"></a>模型的保存</h1><ol>
-<li>保存训练好的模型最好load到cpu上再保存。</li>
-<li>使用torch.nn.DataParallel()训练的模型，注意保存时要去掉module模块，不然加载时也需要先用DataParallel()包裹才能加载。</li>
-</ol>
-<p>```<br>不去掉module保存：<br>torch.save(model.state_dict(), ‘validate.pth.tar’)<br>加载：<br>model = torch.nn.DataParallel(model)<br>state = torch.load(‘validate.pth.tar’)<br>model.load_state_dict(state)</p>
-<p>去掉module并在cpu上保存：<br>model = model.to(‘cpu’)<br>torch.save(model.module.state_dict(),’validate.pth.tar’)<br>加载：<br>state = torch.load(‘validate.pth.tar’)<br>model.load_state_dict(state</p>
+        <h1 id="安装tensorrt"><a href="#安装tensorrt" class="headerlink" title="安装tensorrt"></a>安装tensorrt</h1><p>在jetson上，最新的jetson jetpack上包含了tensorrt，所以在使用的时候需要将系统中的tensorrt导入到环境变量，才能在虚拟环境中使用。<br>例如在我的jetson nx上，tensorrt在/usr/lib/python3.8/dist-packages中，所以将其加入.bashrc中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">export PYTHONPATH=/usr/lib/python3.8/dist-packages:$PYTHONPATH</span><br><span class="line">source ~/.bashrc</span><br><span class="line"></span><br><span class="line">conda activate virtual-env</span><br><span class="line">import tensorrt #验证是否可以使用</span><br></pre></td></tr></table></figure>
+<p>参考 <a target="_blank" rel="noopener" href="https://docs.donkeycar.com/guide/robot_sbc/tensorrt_jetson_nano/">https://docs.donkeycar.com/guide/robot_sbc/tensorrt_jetson_nano/</a></p>
+<h1 id="tensor支持LSTMcell"><a href="#tensor支持LSTMcell" class="headerlink" title="tensor支持LSTMcell"></a>tensor支持LSTMcell</h1><p><a target="_blank" rel="noopener" href="https://github.com/pytorch/TensorRT/releases">https://github.com/pytorch/TensorRT/releases</a><br><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/onnx_supported_aten_ops.html">https://pytorch.org/docs/stable/onnx_supported_aten_ops.html</a><br>可能是pytorch的版本低了，不支持到处lstmcell的onxx</p>
+<h1 id="使用torch2trt报错"><a href="#使用torch2trt报错" class="headerlink" title="使用torch2trt报错"></a>使用torch2trt报错</h1><p><a target="_blank" rel="noopener" href="https://forums.developer.nvidia.com/t/torch2trt-error-number-of-kernel-weights-does-not-match-tensor-dimensions/244841">https://forums.developer.nvidia.com/t/torch2trt-error-number-of-kernel-weights-does-not-match-tensor-dimensions/244841</a> 相关帖子，但是还没有解决</p>
+<p>使用trtexec将onnx转为trt，然后<br>/usr/src/tensorrt/bin/trtexec –onnx=/home/tangpeng/LightModels/onnx_models/shufflenet-bayer-cuda.onnx –saveEngine=/home/tangpeng/LightModels/trt_models/shufflenet-bayer-cuda.trt –explicitBatch –fp16</p>
 
     </div>
 
@@ -220,11 +226,11 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/04/09/hello-world/" rel="prev" title="Hello World">
-      <i class="fa fa-chevron-left"></i> Hello World
+    <a href="/2023/06/25/%E5%A3%B0%E9%9F%B3%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B/" rel="prev" title="">
+      <i class="fa fa-chevron-left"></i> 
     </a></div>
       <div class="post-nav-item">
-    <a href="/2023/06/25/bayer2rgb/" rel="next" title="">
+    <a href="/2023/06/25/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%9B%B4%E6%96%B0%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F/" rel="next" title="">
        <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -285,7 +291,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%BF%9D%E5%AD%98"><span class="nav-number">1.</span> <span class="nav-text">模型的保存</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85tensorrt"><span class="nav-number">1.</span> <span class="nav-text">安装tensorrt</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tensor%E6%94%AF%E6%8C%81LSTMcell"><span class="nav-number">2.</span> <span class="nav-text">tensor支持LSTMcell</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8torch2trt%E6%8A%A5%E9%94%99"><span class="nav-number">3.</span> <span class="nav-text">使用torch2trt报错</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"justqj.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="模型的保存 保存训练好的模型最好load到cpu上再保存。 使用torch.nn.DataParallel()训练的模型，注意保存时要去掉module模块，不然加载时也需要先用DataParallel()包裹才能加载。  &#96;&#96;&#96;不去掉module保存：torch.save(model.state_dict(), ‘validate.pth.tar’)加载：model &#x3D; torch.nn.Data">
+  <meta name="description" content="Night system用于分析nvidia gpu性能，可以在jetson上使用，跟随jetpack一起安装。检测当前系统是否安装： 1sudo nsys --help 最简单的使用 12345sudo nsys profile -t &lt;event to trace&gt; -o &lt;filename to record result&gt; myapp app_arguments#p">
 <meta property="og:type" content="article">
-<meta property="og:title" content="testmyblog.md">
-<meta property="og:url" content="https://justqj.github.io/2023/04/09/testmyblog/index.html">
+<meta property="og:title" content="流年的个人博客">
+<meta property="og:url" content="https://justqj.github.io/2023/06/25/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/index.html">
 <meta property="og:site_name" content="流年的个人博客">
-<meta property="og:description" content="模型的保存 保存训练好的模型最好load到cpu上再保存。 使用torch.nn.DataParallel()训练的模型，注意保存时要去掉module模块，不然加载时也需要先用DataParallel()包裹才能加载。  &#96;&#96;&#96;不去掉module保存：torch.save(model.state_dict(), ‘validate.pth.tar’)加载：model &#x3D; torch.nn.Data">
+<meta property="og:description" content="Night system用于分析nvidia gpu性能，可以在jetson上使用，跟随jetpack一起安装。检测当前系统是否安装： 1sudo nsys --help 最简单的使用 12345sudo nsys profile -t &lt;event to trace&gt; -o &lt;filename to record result&gt; myapp app_arguments#p">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-04-09T13:57:58.000Z">
-<meta property="article:modified_time" content="2023-04-09T14:00:54.075Z">
+<meta property="article:published_time" content="2023-06-25T08:16:43.430Z">
+<meta property="article:modified_time" content="2023-06-12T14:06:25.943Z">
 <meta property="article:author" content="流年">
 <meta property="article:tag" content="个人笔记、计算机技术、备忘录">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://justqj.github.io/2023/04/09/testmyblog/">
+<link rel="canonical" href="https://justqj.github.io/2023/06/25/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>testmyblog.md | 流年的个人博客</title>
+  <title> | 流年的个人博客</title>
   
 
 
@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://justqj.github.io/2023/04/09/testmyblog/">
+    <link itemprop="mainEntityOfPage" href="https://justqj.github.io/2023/06/25/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -174,7 +174,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          testmyblog.md
+          
         </h1>
 
         <div class="post-meta">
@@ -183,10 +183,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-04-09 21:57:58 / 修改时间：22:00:54" itemprop="dateCreated datePublished" datetime="2023-04-09T21:57:58+08:00">2023-04-09</time>
+              <time title="创建时间：2023-06-25 16:16:43" itemprop="dateCreated datePublished" datetime="2023-06-25T16:16:43+08:00">2023-06-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-06-12 22:06:25" itemprop="dateModified" datetime="2023-06-12T22:06:25+08:00">2023-06-12</time>
+              </span>
 
           
 
@@ -199,12 +205,52 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="模型的保存"><a href="#模型的保存" class="headerlink" title="模型的保存"></a>模型的保存</h1><ol>
-<li>保存训练好的模型最好load到cpu上再保存。</li>
-<li>使用torch.nn.DataParallel()训练的模型，注意保存时要去掉module模块，不然加载时也需要先用DataParallel()包裹才能加载。</li>
-</ol>
-<p>```<br>不去掉module保存：<br>torch.save(model.state_dict(), ‘validate.pth.tar’)<br>加载：<br>model = torch.nn.DataParallel(model)<br>state = torch.load(‘validate.pth.tar’)<br>model.load_state_dict(state)</p>
-<p>去掉module并在cpu上保存：<br>model = model.to(‘cpu’)<br>torch.save(model.module.state_dict(),’validate.pth.tar’)<br>加载：<br>state = torch.load(‘validate.pth.tar’)<br>model.load_state_dict(state</p>
+        <h1 id="Night-system"><a href="#Night-system" class="headerlink" title="Night system"></a>Night system</h1><p>用于分析nvidia gpu性能，可以在jetson上使用，跟随jetpack一起安装。<br>检测当前系统是否安装：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nsys --help</span><br></pre></td></tr></table></figure>
+<p>最简单的使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo nsys profile -t &lt;event to trace&gt; -o &lt;filename to record result&gt; myapp app_arguments</span><br><span class="line">#python 实例</span><br><span class="line">sudo nsys profile python test.py #-t 默认为 cuda, nvtx等，-o默认为在当前目录创建一个文件，例如得到文件 report1.nsys-rep</span><br><span class="line">nsys profile --trace=cuda,cudnn,cublas,osrt,nvtx --delay=60 python my_dnn_script.py</span><br><span class="line">nsys profile --trace=vulkan,osrt,nvtx --delay=60 ./myapp</span><br></pre></td></tr></table></figure>
+<p>分析得到的数据文件 report1.nsys-rep</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nsys stats report1.nsys-rep</span><br><span class="line"></span><br><span class="line"># 在运行程序时直接给出profile的数据</span><br><span class="line">nsys profile --stats=true &lt;application&gt;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://docs.nvidia.com/nsight-systems/UserGuide/index.html#example-single-command-lines">https://docs.nvidia.com/nsight-systems/UserGuide/index.html#example-single-command-lines</a></p>
+<h1 id="torch-profiler"><a href="#torch-profiler" class="headerlink" title="torch profiler"></a>torch profiler</h1><p> with profiler.profile(<br>             activities=[<br>                torch.profiler.ProfilerActivity.CPU,<br>                torch.profiler.ProfilerActivity.CUDA,<br>            ],<br>            # In this example with wait=1, warmup=1, active=2,<br>            # profiler will skip the first step/iteration,<br>            # start warming up on the second, record<br>            # the third and the forth iterations,<br>            # after which the trace will become available<br>            # and on_trace_ready (when set) is called;<br>            # the cycle repeats starting with the next step<br>            #<a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/profiler.html">https://pytorch.org/docs/stable/profiler.html</a><br>            #tensorboard –logdir=output –port=8989 通过本地chrome游览器打开profiler的结果，port默认为6006，被其他进程用了，所以要换一个port<br>            schedule = torch.profiler.schedule(<br>                wait=0,<br>                warmup=0,<br>                active=1,<br>                repeat=1),<br>            on_trace_ready=profiler.tensorboard_trace_handler(‘/home/tangpeng/ISPExperiment/ExperimentFile/3/output’),<br>            with_stack=True</p>
+<pre><code>    ) as profiler_:
+        with torch.no_grad():
+            t1 = time.perf_counter()    
+            decisions, decision_logits = self.model.policy_net(p_x_device)
+            t2 = time.perf_counter()
+            print(&quot;time used to policy net inference: &quot;, t2-t1)
+
+            t1 = time.perf_counter()
+            #print(&quot;================&gt;&quot;, p_x_device[0].device)
+            #decisions = (torch.rand((self.num_segments, 2, 1),dtype=p_x_device[0].dtype, device=p_x_device[0].device) &gt; self.random_threshold).float()
+            #print(decisions.shape)
+            #print(decisions)
+            rgb_modality_data = mainnet_make_data(bayer_images=selected_images,decisions=decisions, segment_number=self.num_segments, rgb_image_mean=rgb_image_mean,rgb_image_std=rgb_image_std,frames_per_segment=self.frames_per_segment)
+            m_x = [rgb_modality_data.to(self.device), p_x_device[1]]
+            
+            t2 = time.perf_counter()
+            print(&quot;time used to make main net data: &quot;, t2-t1)
+            t1 = time.perf_counter()
+            for i in range(self.num_segments):
+
+                tmp_x = ([m_x[m_i][i, ...] for m_i in range(2)])
+                all_logits.append(self.model.main_net.inference_forward(tmp_x, decisions[i]))  # NxC
+            
+            t2 = time.perf_counter()
+            print(&quot;time used to main net inference: &quot;, t2-t1)
+            final_logits = torch.stack(all_logits, dim=1).mean(dim=1)
+            decisions = decisions.permute((2, 0, 1))
+
+            selection_ratio = decisions.detach().mean(0).mean(0)
+            pred = torch.argmax(final_logits,dim=1).detach()
+            with open(logfile,&#39;a&#39;) as fd:
+                print(&quot;video index: &#123;&#125;, image selection ratio: &#123;&#125;, sound selecton ratio: &#123;&#125;, predict: &#123;&#125;&quot;.format(video_index,selection_ratio[0].item(),selection_ratio[1].item(),pred[0].item()), file=fd, flush=True)
+            msg = &quot;video index: &#123;&#125;, image selection ratio: &#123;&#125;, sound selecton ratio: &#123;&#125;, predict: &#123;&#125;&quot;.format(video_index,selection_ratio[0].item(),selection_ratio[1].item(),pred[0].item())
+            profiler_.step()
+            return msg
+</code></pre>
+<h1 id="Night-Compute"><a href="#Night-Compute" class="headerlink" title="Night Compute"></a>Night Compute</h1><p>按道理在JetPack中应该安装了，在CUDA路劲下，但是Jetson Xavier NX with JetPack4.6中没有。<br>参考：<br><a target="_blank" rel="noopener" href="https://forums.developer.nvidia.com/t/nsight-compute-target-platform-for-jetson/172804">https://forums.developer.nvidia.com/t/nsight-compute-target-platform-for-jetson/172804</a><br><a target="_blank" rel="noopener" href="https://developer.nvidia.com/nsight-compute">https://developer.nvidia.com/nsight-compute</a></p>
 
     </div>
 
@@ -220,13 +266,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/04/09/hello-world/" rel="prev" title="Hello World">
-      <i class="fa fa-chevron-left"></i> Hello World
+    <a href="/2023/06/25/%E5%86%99linux%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97%E5%92%8Cdriver/" rel="prev" title="">
+      <i class="fa fa-chevron-left"></i> 
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2023/06/25/bayer2rgb/" rel="next" title="">
-       <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -285,7 +328,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%BF%9D%E5%AD%98"><span class="nav-number">1.</span> <span class="nav-text">模型的保存</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Night-system"><span class="nav-number">1.</span> <span class="nav-text">Night system</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#torch-profiler"><span class="nav-number">2.</span> <span class="nav-text">torch profiler</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Night-Compute"><span class="nav-number">3.</span> <span class="nav-text">Night Compute</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
