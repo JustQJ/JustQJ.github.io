@@ -20,31 +20,37 @@
     var CONFIG = {"hostname":"justqj.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="记录个人学习的知识和技术">
-<meta property="og:type" content="website">
-<meta property="og:title" content="流年的知识储备区">
-<meta property="og:url" content="https://justqj.github.io/index.html">
+  <meta name="description" content="bayer图像转rgb图像的工具和一些问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bayer2rgb">
+<meta property="og:url" content="https://justqj.github.io/2023/06/25/bayer2rgb/index.html">
 <meta property="og:site_name" content="流年的知识储备区">
-<meta property="og:description" content="记录个人学习的知识和技术">
+<meta property="og:description" content="bayer图像转rgb图像的工具和一些问题">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://justqj.github.io/2023/06/25/bayer2rgb/jetson_nx_raw_image_format.png">
+<meta property="article:published_time" content="2023-06-25T13:23:24.000Z">
+<meta property="article:modified_time" content="2023-06-25T13:53:59.351Z">
 <meta property="article:author" content="流年">
-<meta property="article:tag" content="个人笔记、计算机技术、备忘录">
+<meta property="article:tag" content="image">
+<meta property="article:tag" content="tool">
+<meta property="article:tag" content="isp">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://justqj.github.io/2023/06/25/bayer2rgb/jetson_nx_raw_image_format.png">
 
-<link rel="canonical" href="https://justqj.github.io/">
+<link rel="canonical" href="https://justqj.github.io/2023/06/25/bayer2rgb/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>流年的知识储备区</title>
+  <title>bayer2rgb | 流年的知识储备区</title>
   
 
 
@@ -195,159 +201,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://justqj.github.io/2023/07/02/JetsonNX%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="流年">
-      <meta itemprop="description" content="记录个人学习的知识和技术">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="流年的知识储备区">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/02/JetsonNX%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/" class="post-title-link" itemprop="url">JetsonNX刷机记录</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-07-02 17:48:02 / 修改时间：17:58:26" itemprop="dateCreated datePublished" datetime="2023-07-02T17:48:02+08:00">2023-07-02</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AIoT/" itemprop="url" rel="index"><span itemprop="name">AIoT</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>给Jetson NX 裸机安装系统（L4T，JetPack），联网。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/02/JetsonNX%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://justqj.github.io/2023/06/25/Linux%E5%AE%89%E8%A3%85Cuda/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="流年">
-      <meta itemprop="description" content="记录个人学习的知识和技术">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="流年的知识储备区">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/06/25/Linux%E5%AE%89%E8%A3%85Cuda/" class="post-title-link" itemprop="url">Linux安装Cuda</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-06-25 21:59:59 / 修改时间：22:02:40" itemprop="dateCreated datePublished" datetime="2023-06-25T21:59:59+08:00">2023-06-25</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" itemprop="url" rel="index"><span itemprop="name">软件安装</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在Linux下安装Cuda的基本步骤</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/06/25/Linux%E5%AE%89%E8%A3%85Cuda/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -363,10 +220,9 @@
       <meta itemprop="name" content="流年的知识储备区">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/06/25/bayer2rgb/" class="post-title-link" itemprop="url">bayer2rgb</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          bayer2rgb
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -389,6 +245,7 @@
             </span>
 
           
+            <div class="post-description">bayer图像转rgb图像的工具和一些问题</div>
 
         </div>
       </header>
@@ -399,98 +256,64 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>bayer图像转rgb图像的工具和一些问题</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/06/25/bayer2rgb/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
+        <h1 id="faster-open-isp">faster open-isp</h1>
+<p>整个ISP处理过程可能包含的步骤 <span id="more"></span> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">dpc: True</span><br><span class="line">blc: True</span><br><span class="line">aaf: True</span><br><span class="line">awb: True</span><br><span class="line">cnf: True</span><br><span class="line">cfa: True</span><br><span class="line">ccm: True</span><br><span class="line">gac: True</span><br><span class="line">csc: True</span><br><span class="line">nlm: False</span><br><span class="line">bnf: False</span><br><span class="line">ceh: False</span><br><span class="line">eeh: False</span><br><span class="line">fcs: False</span><br><span class="line">hsc: False</span><br><span class="line">bcc: False</span><br><span class="line">scl: False</span><br></pre></td></tr></table></figure> dpc-&gt;cfa 是bayer域，cfa就是demosic<br>
+ccm-&gt;csc 是RGB域，csc就是将rgb转为yuv格式，所以要也可以去掉<br>
+nlm-&gt;scl 是yuv域，即后面都是针对yuv做相应的调色<br>
+最后的输出，如果有yuv域的数据，就会把yuv转成rgb，再返回。如果没有进行过yuv域的操作，就直接返回rgb域的rgb数据。同时会把数据scale到0-255，就是一个线性的放缩:<br>
+<span class="math display">\[\begin{equation}x_1=x/\max*255
+\end{equation}\]</span><br>
+ISP tuning，如何将得到的rgb效果调好</p>
+<h1 id="opencvpil">opencv+PIL</h1>
+<h2 id="pil使用">PIL使用</h2>
+<p>PIL.Image保存单通道图像，可以将raw-&gt;png，方便查看，只有int8才能保存为jpg，其他深度需要用png <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">f = open(&#x27;image.raw&#x27;, &#x27;rb&#x27;)</span><br><span class="line">rawdata = np.fromfile(f, dtype=np.uint16, count=1080 * 1920)</span><br><span class="line">rawdata = rawdata.reshape(1080,1920)</span><br><span class="line">im = Image.fromarray(rawdata)</span><br><span class="line">im.save(&quot;rawdata12.png&quot;)</span><br></pre></td></tr></table></figure> ## opencv resize采样 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">f = open(&#x27;image.raw&#x27;, &#x27;rb&#x27;)</span><br><span class="line">rawdata = np.fromfile(f, dtype=np.uint16, count=1080 * 1920)</span><br><span class="line">rawdata = rawdata.reshape(1080,1920)</span><br><span class="line">resized_raw = cv2.resize(rawdata,(320, 256),0,0,cv2.INTER_AREA)</span><br><span class="line">im = Image.fromarray(resized_raw)</span><br><span class="line">im.save(&quot;rawdata_resized.png&quot;)</span><br></pre></td></tr></table></figure></p>
+<h2 id="opencv将bayer转为rgb">opencv将bayer转为rgb</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">f = open(&#x27;image.raw&#x27;, &#x27;rb&#x27;)</span><br><span class="line">rawdata = np.fromfile(f, dtype=np.uint16, count=1080 * 1920)</span><br><span class="line">rawdata = rawdata.reshape(1080,1920)</span><br><span class="line">image_bayerrg2rgb=cv2.cvtColor(rawdata, cv2.COLOR_BAYER_RG2BGR)</span><br><span class="line">print(image_bayerrg2rgb)</span><br><span class="line">cv2.imwrite(&quot;cv_image_bayerrg2rgb.png&quot;,image_bayerrg2rgb)</span><br></pre></td></tr></table></figure>
+<p>其中参数<code>cv2.COLOR_BAYER_RG2BGR</code>可以根据bayer的格式和要转换的格式就行修改，见<a target="_blank" rel="noopener" href="https://vovkos.github.io/doxyrest-showcase/opencv/sphinx_rtd_theme/page_imgproc_color_conversions.html">参考</a></p>
+<h1 id="bayer位数转化">bayer位数转化</h1>
+<h2 id="bit-bayer转8bit-bayer">10bit bayer转8bit bayer</h2>
+<p>就是<span class="math inline">\(x*255/1024 = x/4\)</span>，参考<a target="_blank" rel="noopener" href="https://forums.developer.nvidia.com/t/is-there-a-parameter-for-enable-disable-the-tx2-on-board-camera/56970/6">论坛</a></p>
+<h2 id="转化遇到的问题">转化遇到的问题</h2>
+<p>获得的bayer数据大于1024，这是由于格式jetson nx上的raw data的存储格式造成的，<a target="_blank" rel="noopener" href="https://forums.developer.nvidia.com/t/the-data-of-csi-bayer-image-is-too-large/245016/4">参考</a>。 <img src="jetson_nx_raw_image_format.png" alt="jetson_nx_raw_image_format"> 根据图片中的格式，则16bit存储的raw10最右边5位是重复无效的，最左边一位也是无效，看中间的十位。因此直接将数据向右移动5位就是真实的数据，如果要转为8bit，就再移动两位，即除4。 应该不同的平台的这种格式不同，不是统一的填充方式。 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">(py3.8) tangpeng@ubuntu:~/ISPExperiment$  v4l2-ctl --list-formats-ext </span><br><span class="line">ioctl: VIDIOC_ENUM_FMT</span><br><span class="line">        Type: Video Capture</span><br><span class="line"></span><br><span class="line">        [0]: &#x27;RG10&#x27; (10-bit Bayer RGRG/GBGB)</span><br><span class="line">                Size: Discrete 3280x2464</span><br><span class="line">                        Interval: Discrete 0.048s (21.000 fps)</span><br><span class="line">                Size: Discrete 3280x1848</span><br><span class="line">                        Interval: Discrete 0.036s (28.000 fps)</span><br><span class="line">                Size: Discrete 1920x1080</span><br><span class="line">                        Interval: Discrete 0.033s (30.000 fps)</span><br><span class="line">                Size: Discrete 1640x1232</span><br><span class="line">                        Interval: Discrete 0.033s (30.000 fps)</span><br><span class="line">                Size: Discrete 1280x720</span><br><span class="line">                        Interval: Discrete 0.017s (60.000 fps)</span><br></pre></td></tr></table></figure></p>
+<h1 id="fastvideo">fastvideo</h1>
+<p>https://github.com/fastvideo/gpu-camera-sample https://www.fastcompression.com/products/sdk.htm</p>
+<h1 id="vpi">VPI</h1>
+<p>PVA VIC<br>
+may debayering use vpi<br>
+https://docs.nvidia.com/vpi/group__VPI__ColorSpec.html#ga3992fdce156a7a194f8cda65571eefd5</p>
+
+    </div>
+
+    
+    
+    
+     
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/image/" rel="tag"><i class="fa fa-tag"></i>image</a>
+              <a href="/tags/tool/" rel="tag"><i class="fa fa-tag"></i>tool</a>
+              <a href="/tags/isp/" rel="tag"><i class="fa fa-tag"></i>isp</a>
+          </div>
+
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/25/testtags/" rel="prev" title="testtags">
+      <i class="fa fa-chevron-left"></i> testtags
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/06/25/Linux%E5%AE%89%E8%A3%85Cuda/" rel="next" title="Linux安装Cuda">
+      Linux安装Cuda <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
       </footer>
+    
   </article>
   
   
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://justqj.github.io/2023/06/25/testtags/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="流年">
-      <meta itemprop="description" content="记录个人学习的知识和技术">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="流年的知识储备区">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/06/25/testtags/" class="post-title-link" itemprop="url">testtags</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-06-25 17:55:25 / 修改时间：17:56:31" itemprop="dateCreated datePublished" datetime="2023-06-25T17:55:25+08:00">2023-06-25</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Test/" itemprop="url" rel="index"><span itemprop="name">Test</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
   
 
 
@@ -543,6 +366,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#faster-open-isp"><span class="nav-number">1.</span> <span class="nav-text">faster open-isp</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#opencvpil"><span class="nav-number">2.</span> <span class="nav-text">opencv+PIL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pil%E4%BD%BF%E7%94%A8"><span class="nav-number">2.1.</span> <span class="nav-text">PIL使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#opencv%E5%B0%86bayer%E8%BD%AC%E4%B8%BArgb"><span class="nav-number">2.2.</span> <span class="nav-text">opencv将bayer转为rgb</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#bayer%E4%BD%8D%E6%95%B0%E8%BD%AC%E5%8C%96"><span class="nav-number">3.</span> <span class="nav-text">bayer位数转化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bit-bayer%E8%BD%AC8bit-bayer"><span class="nav-number">3.1.</span> <span class="nav-text">10bit bayer转8bit bayer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AC%E5%8C%96%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">3.2.</span> <span class="nav-text">转化遇到的问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fastvideo"><span class="nav-number">4.</span> <span class="nav-text">fastvideo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vpi"><span class="nav-number">5.</span> <span class="nav-text">VPI</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

@@ -4,6 +4,91 @@
   
     
     <entry>
+      <title>JetsonNX刷机记录</title>
+      <link href="/2023/07/02/JetsonNX%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/"/>
+      <url>/2023/07/02/JetsonNX%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/</url>
+      
+        <content type="html"><![CDATA[<span id="more"></span><h1 id="需要的设备">需要的设备</h1><ol type="1"><li>Jetson Xavier NX 机器</li><li>一台安装有Ubuntu系统的主机，可以是虚拟机</li><li>usb-microusb线用于连接板子和主机</li><li>鼠标、键盘、屏幕（最好有，没有就通过串口通信）</li><li>网线（一般可以不用）</li></ol><h1 id="安装操作系统">安装操作系统</h1><ol type="1"><li><p>在主机上安装Ubuntu系统，一般是使用VMware虚拟机安装。需要根据要安装在jetson上的系统版本选择对应的主机上的Ubuntu系统系统版本。例如安装JetPack4.x就选择Ubuntu18.0；安装JetPack5.x就选择Ubuntu20.0。</p></li><li><p>在Ubuntu系统中安装<a href="https://developer.nvidia.com/zh-cn/embedded/jetpack">sdkmanager</a>，注册NVIDIA账号。</p></li><li><p>将板子设置为recovery模式，就是使用一根线将板子上面的那排引脚导数第二个和倒数第三个短接起来（使用GND和REC标记），接通电源， 将板子通过usb-microusb线连接到主机。</p></li><li><p>在Ubuntu系统中发现连接的USB设备后(lsusb可以查看)，运行sdkmanager命令可以进入<a href="https://docs.nvidia.com/sdk-manager/install-with-sdkm-jetson/index.html">安装流程</a>。在安装流程中，一般我们只安装系统，不安装其他东西，即在<code>Step 01</code>中只勾上第一行的Jetson，第二行的Target Hardware，第三行的Linux（注意JetPack版本）。在<code>Step 03</code>中只安装Jetson OS，不选择Jetson SDK Components, 这部分我们后面安装。同时在<code>Step 03</code>中的Setup中，由于没有网线，选择Manual Setup，同时设置username和password。</p></li></ol><h1 id="开机设置">开机设置</h1><p>这里分为两种：有设备和无设备</p><h2 id="有设备">有设备</h2><p>如果有鼠标、键盘和屏幕这几个设备，就直接连到Jetson 板子上，然后启动，连接网络。</p><h2 id="没有设备">没有设备</h2><p>在windows中，使用PuTTY通过usb-microusb线连接进入板子之中。就是将usb-microusb连接到Windows后，打开PuTTY，进行如下图所示的设置，就可以创建连接，进入到刚才在Jetson安装的系统了。这里连接的串口号码就是USB连接的串口，在设备管理器中查看。 <img src="jetson_flash_connect_putty.png" alt="jetson_flash_connect_putty"></p><p>然后配置网络，连接wifi。<a href="https://github.com/f1tenth/f1tenth_doc/blob/stable/getting_started/software_setup/optional_software_nx.rst">参考</a>中的第三步配置网络，到其中的第5小步即可（使用的是<code>nmcli</code>命令）。</p><h1 id="设置从nvme开机启动">设置从NVME开机启动</h1><ul><li>格式化磁盘并设置分区 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sudo gdisk /dev/nvme0n1</span><br><span class="line">command (? for help): o</span><br><span class="line">deletes all partitions and creates a new protective MBR</span><br><span class="line">command (? for help): n</span><br><span class="line">Partition number (1-128, default 1): 1</span><br><span class="line">First sector (34-250069646, default = 2048) or &#123;+-&#125;size&#123;KMGTP&#125;: </span><br><span class="line">Last sector (2048-250069646, default = 250069646) or &#123;+-&#125;size&#123;KMGTP&#125;: +110G #这里表示这个分区的大小是110G，不设置默认剩余全部</span><br><span class="line">Command (? for help): c</span><br><span class="line">Enter name: nx110nvme</span><br><span class="line">Command (? for help): w</span><br><span class="line">Final checks complete. About to write GPT data. THIS WILL OVERWRITE EXISTING</span><br><span class="line"></span><br><span class="line">sudo mkfs.ext4 /dev/nvme0n1p1 #设置分区格式</span><br></pre></td></tr></table></figure></li><li>设置开机启动 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/jetsonhacks/rootOnNVMe.git</span><br><span class="line">cd rootOnNVMe</span><br><span class="line">./copy-rootfs-ssd.sh #复制文件到nvme</span><br><span class="line">./setup-service.sh #设置开机启动，重启生效</span><br></pre></td></tr></table></figure> <strong>注：在有屏幕、键盘、鼠标时也可以使用图形界面，<a href="https://blog.csdn.net/bit_hxz/article/details/123657164">参考</a></strong></li></ul><h1 id="安装jetpack">安装JetPack</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install nvidia-jetpack</span><br><span class="line">sudo apt show nvidia-jetpack</span><br></pre></td></tr></table></figure><p>参考:https://docs.nvidia.com/jetson/jetpack/install-jetpack/index.html</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> AIoT </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> linux </tag>
+            
+            <tag> install system </tag>
+            
+            <tag> jetson </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Linux安装Cuda</title>
+      <link href="/2023/06/25/Linux%E5%AE%89%E8%A3%85Cuda/"/>
+      <url>/2023/06/25/Linux%E5%AE%89%E8%A3%85Cuda/</url>
+      
+        <content type="html"><![CDATA[<span id="more"></span><h1 id="简介">简介</h1><p>NVIDIA提供的CUDA中包含了toolkit和driver，在安装多版本cuda的情况下，一般我们只安装toolkit部分，而driver部分一般是使用系统中的最高版本的cuda对应的driver，向后兼容的。就是说当我们安装的cuda版本比系统中最高版本高时，需要更新系统中的driver，即在安装时driver也需要安装以覆盖系统当前的driver。如果安装的是低版本的cuda，就不用了。</p><h1 id="下载cuda文件">下载CUDA文件</h1><p><a href="https://developer.nvidia.com/cuda-downloads">下载地址</a>，选择对应的系统，下载 <code>cuda_xxx.run</code>文件。 查看命令行参数 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh cuda_12.0.0_525.60.13_linux.run --help</span><br></pre></td></tr></table></figure> 安装 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo sh cuda_12.0.0_525.60.13_linux.run </span><br></pre></td></tr></table></figure> 上面的命令会产生一个选择界面，可以选择是否安装driver、toolkit等，以及修改相应的安装路径，也可以使用命令行参数来完成这些事情。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 软件安装 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Cuda </tag>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>bayer2rgb</title>
+      <link href="/2023/06/25/bayer2rgb/"/>
+      <url>/2023/06/25/bayer2rgb/</url>
+      
+        <content type="html"><![CDATA[<h1 id="faster-open-isp">faster open-isp</h1><p>整个ISP处理过程可能包含的步骤 <span id="more"></span> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">dpc: True</span><br><span class="line">blc: True</span><br><span class="line">aaf: True</span><br><span class="line">awb: True</span><br><span class="line">cnf: True</span><br><span class="line">cfa: True</span><br><span class="line">ccm: True</span><br><span class="line">gac: True</span><br><span class="line">csc: True</span><br><span class="line">nlm: False</span><br><span class="line">bnf: False</span><br><span class="line">ceh: False</span><br><span class="line">eeh: False</span><br><span class="line">fcs: False</span><br><span class="line">hsc: False</span><br><span class="line">bcc: False</span><br><span class="line">scl: False</span><br></pre></td></tr></table></figure> dpc-&gt;cfa 是bayer域，cfa就是demosic<br>ccm-&gt;csc 是RGB域，csc就是将rgb转为yuv格式，所以要也可以去掉<br>nlm-&gt;scl 是yuv域，即后面都是针对yuv做相应的调色<br>最后的输出，如果有yuv域的数据，就会把yuv转成rgb，再返回。如果没有进行过yuv域的操作，就直接返回rgb域的rgb数据。同时会把数据scale到0-255，就是一个线性的放缩:<br><span class="math display">\[\begin{equation}x_1=x/\max*255\end{equation}\]</span><br>ISP tuning，如何将得到的rgb效果调好</p><h1 id="opencvpil">opencv+PIL</h1><h2 id="pil使用">PIL使用</h2><p>PIL.Image保存单通道图像，可以将raw-&gt;png，方便查看，只有int8才能保存为jpg，其他深度需要用png <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">f = open(&#x27;image.raw&#x27;, &#x27;rb&#x27;)</span><br><span class="line">rawdata = np.fromfile(f, dtype=np.uint16, count=1080 * 1920)</span><br><span class="line">rawdata = rawdata.reshape(1080,1920)</span><br><span class="line">im = Image.fromarray(rawdata)</span><br><span class="line">im.save(&quot;rawdata12.png&quot;)</span><br></pre></td></tr></table></figure> ## opencv resize采样 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">f = open(&#x27;image.raw&#x27;, &#x27;rb&#x27;)</span><br><span class="line">rawdata = np.fromfile(f, dtype=np.uint16, count=1080 * 1920)</span><br><span class="line">rawdata = rawdata.reshape(1080,1920)</span><br><span class="line">resized_raw = cv2.resize(rawdata,(320, 256),0,0,cv2.INTER_AREA)</span><br><span class="line">im = Image.fromarray(resized_raw)</span><br><span class="line">im.save(&quot;rawdata_resized.png&quot;)</span><br></pre></td></tr></table></figure></p><h2 id="opencv将bayer转为rgb">opencv将bayer转为rgb</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">f = open(&#x27;image.raw&#x27;, &#x27;rb&#x27;)</span><br><span class="line">rawdata = np.fromfile(f, dtype=np.uint16, count=1080 * 1920)</span><br><span class="line">rawdata = rawdata.reshape(1080,1920)</span><br><span class="line">image_bayerrg2rgb=cv2.cvtColor(rawdata, cv2.COLOR_BAYER_RG2BGR)</span><br><span class="line">print(image_bayerrg2rgb)</span><br><span class="line">cv2.imwrite(&quot;cv_image_bayerrg2rgb.png&quot;,image_bayerrg2rgb)</span><br></pre></td></tr></table></figure><p>其中参数<code>cv2.COLOR_BAYER_RG2BGR</code>可以根据bayer的格式和要转换的格式就行修改，见<a href="https://vovkos.github.io/doxyrest-showcase/opencv/sphinx_rtd_theme/page_imgproc_color_conversions.html">参考</a></p><h1 id="bayer位数转化">bayer位数转化</h1><h2 id="bit-bayer转8bit-bayer">10bit bayer转8bit bayer</h2><p>就是<span class="math inline">\(x*255/1024 = x/4\)</span>，参考<a href="https://forums.developer.nvidia.com/t/is-there-a-parameter-for-enable-disable-the-tx2-on-board-camera/56970/6">论坛</a></p><h2 id="转化遇到的问题">转化遇到的问题</h2><p>获得的bayer数据大于1024，这是由于格式jetson nx上的raw data的存储格式造成的，<a href="https://forums.developer.nvidia.com/t/the-data-of-csi-bayer-image-is-too-large/245016/4">参考</a>。 <img src="jetson_nx_raw_image_format.png" alt="jetson_nx_raw_image_format"> 根据图片中的格式，则16bit存储的raw10最右边5位是重复无效的，最左边一位也是无效，看中间的十位。因此直接将数据向右移动5位就是真实的数据，如果要转为8bit，就再移动两位，即除4。 应该不同的平台的这种格式不同，不是统一的填充方式。 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">(py3.8) tangpeng@ubuntu:~/ISPExperiment$  v4l2-ctl --list-formats-ext </span><br><span class="line">ioctl: VIDIOC_ENUM_FMT</span><br><span class="line">        Type: Video Capture</span><br><span class="line"></span><br><span class="line">        [0]: &#x27;RG10&#x27; (10-bit Bayer RGRG/GBGB)</span><br><span class="line">                Size: Discrete 3280x2464</span><br><span class="line">                        Interval: Discrete 0.048s (21.000 fps)</span><br><span class="line">                Size: Discrete 3280x1848</span><br><span class="line">                        Interval: Discrete 0.036s (28.000 fps)</span><br><span class="line">                Size: Discrete 1920x1080</span><br><span class="line">                        Interval: Discrete 0.033s (30.000 fps)</span><br><span class="line">                Size: Discrete 1640x1232</span><br><span class="line">                        Interval: Discrete 0.033s (30.000 fps)</span><br><span class="line">                Size: Discrete 1280x720</span><br><span class="line">                        Interval: Discrete 0.017s (60.000 fps)</span><br></pre></td></tr></table></figure></p><h1 id="fastvideo">fastvideo</h1><p>https://github.com/fastvideo/gpu-camera-sample https://www.fastcompression.com/products/sdk.htm</p><h1 id="vpi">VPI</h1><p>PVA VIC<br>may debayering use vpi<br>https://docs.nvidia.com/vpi/group__VPI__ColorSpec.html#ga3992fdce156a7a194f8cda65571eefd5</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> image algorithm </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> image </tag>
+            
+            <tag> tool </tag>
+            
+            <tag> isp </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>testtags</title>
       <link href="/2023/06/25/testtags/"/>
       <url>/2023/06/25/testtags/</url>
