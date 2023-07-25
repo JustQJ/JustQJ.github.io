@@ -4,6 +4,50 @@
   
     
     <entry>
+      <title>Linux安装Torch</title>
+      <link href="/2023/07/25/Linux%E5%AE%89%E8%A3%85Torch/"/>
+      <url>/2023/07/25/Linux%E5%AE%89%E8%A3%85Torch/</url>
+      
+        <content type="html"><![CDATA[<span id="more"></span><p>在pytorch<a href="https://pytorch.org/get-started/locally/">官网</a>查找合适的版本。 在conda 环境中，也使用pip安装最方便。例如： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install torch==1.13.0+cu116 torchvision==0.14.0+cu116 torchaudio==0.13.0 --extra-index-url https://download.pytorch.org/whl/cu116</span><br></pre></td></tr></table></figure> 其中cu116表示机器的cuda版本是11.6，可通过nvidia-smi查看。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 软件安装 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> linux </tag>
+            
+            <tag> tool </tag>
+            
+            <tag> cuda </tag>
+            
+            <tag> torch </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>in-place-dnn-inference</title>
+      <link href="/2023/07/13/in-place-dnn-inference/"/>
+      <url>/2023/07/13/in-place-dnn-inference/</url>
+      
+        <content type="html"><![CDATA[<p>DNN模型进行推理时，使用<code>in-place</code>技术进行内存节约。 <span id="more"></span></p><p>在神经网络推理时，理论上需要为每一层的输入和输出分配内存。但实际上，由于大多数层的输入和输出结果只在当时有用，推理下一层时就没用了，所以可以对内存进行重用，只为某些层进行内存的分配，而其他层则重用这些层分配的内存进行数据的存储。 https://mxnet.apache.org/versions/1.0.0/architecture/note_memory.html https://github.com/ultralytics/yolov5/issues/4647 Micro Darknet For Inference: ESL reference for inference accelerator design 利用了重用技术，但是只是在CPU内存上 https://forums.developer.nvidia.com/t/darknet-yolov3-optimized-for-jetson-unified-memory-and-mixed-precision/123133 使用了jetson上的统一内存管理</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>JetsonNX刷机记录</title>
       <link href="/2023/07/02/JetsonNX%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/"/>
       <url>/2023/07/02/JetsonNX%E5%88%B7%E6%9C%BA%E8%AE%B0%E5%BD%95/</url>
