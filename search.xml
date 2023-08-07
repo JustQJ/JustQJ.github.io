@@ -4,11 +4,58 @@
   
     
     <entry>
+      <title>python函数查找</title>
+      <link href="/2023/08/07/python%E5%87%BD%E6%95%B0%E6%9F%A5%E6%89%BE/"/>
+      <url>/2023/08/07/python%E5%87%BD%E6%95%B0%E6%9F%A5%E6%89%BE/</url>
+      
+        <content type="html"><![CDATA[<span id="more"></span><p>使用<code>inspect</code>模块 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> inspect</span><br><span class="line"><span class="built_in">print</span>(inspect.getsource(fun)) <span class="comment">#打印函数定义 </span></span><br><span class="line"><span class="built_in">print</span>(inspect.getfile(fun))  <span class="comment">#打印函数位置</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> tool </tag>
+            
+            <tag> python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Bert学习</title>
+      <link href="/2023/07/31/Bert%E5%AD%A6%E4%B9%A0/"/>
+      <url>/2023/07/31/Bert%E5%AD%A6%E4%B9%A0/</url>
+      
+        <content type="html"><![CDATA[<p>简短描述显示 <span id="more"></span></p><p>https://mccormickml.com/2019/07/22/BERT-fine-tuning/</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Transformer学习</title>
+      <link href="/2023/07/31/Transformer%E5%AD%A6%E4%B9%A0/"/>
+      <url>/2023/07/31/Transformer%E5%AD%A6%E4%B9%A0/</url>
+      
+        <content type="html"><![CDATA[<p>简短描述显示 <span id="more"></span></p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Linux安装Torch</title>
       <link href="/2023/07/25/Linux%E5%AE%89%E8%A3%85Torch/"/>
       <url>/2023/07/25/Linux%E5%AE%89%E8%A3%85Torch/</url>
       
-        <content type="html"><![CDATA[<span id="more"></span><p>在pytorch<a href="https://pytorch.org/get-started/locally/">官网</a>查找合适的版本。 在conda 环境中，也使用pip安装最方便。例如： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install torch==1.13.0+cu116 torchvision==0.14.0+cu116 torchaudio==0.13.0 --extra-index-url https://download.pytorch.org/whl/cu116</span><br></pre></td></tr></table></figure> 其中cu116表示机器的cuda版本是11.6，可通过nvidia-smi查看。</p>]]></content>
+        <content type="html"><![CDATA[<span id="more"></span><h1 id="官网安装">官网安装</h1><p>在pytorch<a href="https://pytorch.org/get-started/locally/">官网</a>查找合适的版本。 在conda 环境中，也使用pip安装最方便。例如： <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install torch==1.13.0+cu116 torchvision==0.14.0+cu116 torchaudio==0.13.0 --extra-index-url https://download.pytorch.org/whl/cu116</span><br></pre></td></tr></table></figure> 其中cu116表示机器的cuda版本是11.6，可通过nvidia-smi查看。</p><h1 id="清华镜像">清华镜像</h1><p>有时候国内的机器访问官网很慢，可以使用清华镜像安装，如 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install -i https://pypi.tuna.tsinghua.edu.cn/simple torch==1.13.0</span><br><span class="line">pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple #直接读取文件安装</span><br></pre></td></tr></table></figure></p>]]></content>
       
       
       <categories>
