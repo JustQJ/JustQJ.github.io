@@ -14,7 +14,7 @@ footer_text: >
   Powered by Jekyll with the al-folio theme.
 keywords: 个人笔记, 计算机技术, 深度学习, AIoT
 lang: zh-CN
-icon: /assets/img/avatar.gif
+icon: avatar.gif
 
 url: https://justqj.github.io
 baseurl: ""
